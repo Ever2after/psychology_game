@@ -1,0 +1,182 @@
+.game_ready{
+  color : #fff;
+}
+
+.game_ready .row1{
+  box-sizing: border-box;
+  width : 100%;
+  display : flex;
+  flex-direction: row;
+  height : 110px;
+  padding : 40px 0;
+  line-height : 22px;
+}
+
+.game_ready .row1 .info{
+  width : 1300px;
+}
+
+.game_ready .row1 .info span:nth-child(1){
+  font-size : 30px;
+}
+
+.game_ready .row1 .info span:nth-child(2){
+  font-size : 22px;
+  margin-left : 30px;
+}
+
+.game_ready .row1 .info span:nth-child(3){
+  float : right;
+  font-size : 22px;
+}
+
+.game_ready .row2{
+  display : flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.game_ready .row2 .user_container, .game_ready .row1 .dummy1{
+  flex : 1 1 300px;
+}
+
+.game_ready .row2 .chatting_container{
+  width : 1300px;
+  background-color : #384050;
+  height : 600px;
+}
+
+.game_ready .row2 .dummy, .game_ready .row1 .dummy2{
+  flex : 1 1 300px;
+}
+
+.game_ready .user_container{
+  box-sizing: border-box;
+  display : flex;
+  flex-direction: column;
+}
+
+.game_ready .user_container > div:nth-child(1){
+  text-align : center;
+  font-size : 18px;
+  padding : 10px;
+
+  border-bottom : 2px solid #FFCF24;
+}
+
+.game_ready .user_container > div{
+  text-align : left;
+  padding : 10px 30px 0 30px;
+}
+
+.game_ready .chatting{
+  box-sizing: border-box;
+  height : 510px;
+  overflow-y : auto;
+  padding : 0 35px;
+  margin : 20px 0;
+}
+
+.game_ready .chatting::-webkit-scrollbar{
+  background-color : #384050;
+  width : 25px;
+}
+
+.game_ready .chatting::-webkit-scrollbar-thumb{
+  background-color : #222B3D;
+  border-radius: 50px;
+  background-clip: padding-box;
+  border: 5px solid transparent;
+}
+
+
+.game_ready .chatting_input{
+  height : 50px;
+  display : flex;
+  flex-direction: row;
+}
+
+.game_ready .chatting_input > input{
+  box-sizing: border-box;
+  height : 50px;
+  flex : 1 3 1200px;
+  border : 2px solid #FFCF24;
+  background-color : #373B56;
+  padding : 10px 20px;
+  font-size : 18px;
+  color : #fff;
+}
+
+.game_ready .chatting_input > button{
+  height : 50px;
+  flex : 1 1 100px;
+  background-color : #FFCF24;
+  box-sizing: border-box;
+  font-size : 18px;
+}
+
+.game_ready .chat, .game_ready .mychat{
+  margin : 5px 0;
+}
+
+.game_ready .mychat{
+  text-align : right;
+}
+
+.game_ready .chat > span:nth-child(1){
+  font-size : 18px;
+  color : #FFCF24;
+}
+
+.game_ready .chat > span:nth-child(2){
+  font-size : 18px;
+}
+
+.game_ready .chat > span:nth-child(3){
+  color : #707070;
+  font-size : 14px;
+  display : inline-block;
+  margin-left : 10px;
+}
+
+.game_ready .mychat > span:nth-child(1){
+  color : #707070;
+  font-size : 14px;
+  display : inline-block;
+  margin-right : 10px;
+}
+
+.game_ready .mychat > span:nth-child(2){
+  font-size : 18px;
+}
+
+.game_ready .alert{
+  box-sizing: border-box;
+  background : #222B3D;
+  border-radius : 50px;
+  width : 400px;
+  margin : 10px auto;
+  text-align: center;
+  padding : 10px 30px;
+  box-shadow : 0px 3px 6px rgba(0,0,0,0.2);
+}
+
+.game_ready .button_container{
+  text-align : right;
+}
+
+.game_ready .button_container > button{
+  width : 160px;
+  font-size : 20px;
+  padding : 10px 30px;
+  border : solid 2px #FFCF24;
+  margin : 30px 0 0 30px;
+}
+
+.game_ready .button_container > button:nth-child(1){
+  color : #FFCF24;
+}
+
+.game_ready .button_container > button:nth-child(2){
+  background-color : #FFCF24;
+}

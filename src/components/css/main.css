@@ -1,0 +1,109 @@
+a{
+  text-decoration: none;
+  color : black;
+  transition : .3s;
+}
+
+button{
+  background : none;
+  outline : none;
+  border : none;
+  padding : none;
+  transition : .3s;
+}
+
+button:hover{
+  cursor: pointer;
+}
+
+input{
+  border : none;
+  outline : none;
+}
+
+.main{
+  margin : 0 auto;
+  width : 1300px;
+}
+
+.main a, .main button{
+  display : inline-block;
+  font-size : 16px;
+  padding : 10px 30px;
+  background-color : #FFCF24;
+  margin-right : 30px;
+  border-radius : 7px;
+  box-shadow : 0px 3px 6px rgba(0,0,0,0.16);
+}
+
+.main .menu{
+  width : 1300px;
+  margin : 30px 0;
+}
+
+.main .menu > button, .main .menu > a, .main .cancle{
+  border : 2px solid #FFCF24;
+}
+
+.main .menu > button:hover, .main .menu > a:hover, .main .cancle{
+  background-color : #222B3D;
+  border : 2px solid #FFCF24;
+  color : #FFCF24;
+}
+
+.menu > button:nth-child(1){
+  width : 140px;
+}
+
+.generate_room{
+  margin : 30px 0;
+}
+
+.generate_room > div{
+  display : flex;
+  flex-direction: row;
+  margin-bottom : 30px;
+}
+
+.generate_room > div > button{
+  background-color : #384050;
+  color : #fff;
+  border-radius : 50px;
+}
+
+.generate_room > div > .select{
+  background-color : #FFCF24;
+  color : #000000;
+}
+
+.generate_room > div > .circle{
+  box-sizing: border-box;
+  width : 45px;
+  padding : 0;
+}
+
+.generate_room .max_select > button:nth-child(4){
+  box-sizing: border-box;
+  background-color : #222B3D;
+  border : 2px solid #FFCF24;
+  color : #FFCF24;
+}
+
+.generate_room .max_select > button:nth-child(4):hover{
+  background-color : #FFCF24;
+  color : #000000;
+}
+
+.generate_room .max_select > button:nth-child(2){
+  padding : 10px 50px;
+}
+
+.main .games{
+  display : flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.main .games .center{
+  margin : 0 50px;
+}

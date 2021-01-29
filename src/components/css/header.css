@@ -1,0 +1,31 @@
+.header{
+  height : 65px;
+  box-sizing: border-box;
+  display : flex;
+  width : 100%;
+  flex-direction: row;
+  background-color: #373B56;
+}
+
+.header > a{
+  display : inline-block;
+  width : 400px;
+  text-align : center;
+  font-size : 22px;
+  margin : auto 0;
+  color : #FFCF24;
+  font-weight: bold;
+}
+
+.header > div{
+  width : 100%;
+  display : flex;
+  justify-content: space-between;
+}
+
+.header div a, .header div span{
+  font-size : 20px;
+  color : #fff;
+  display : inline-block;
+  margin : auto 60px;
+}

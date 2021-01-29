@@ -1,0 +1,9 @@
+.treasure_ship {
+  width : 100%;
+  text-align: center;
+}
+
+.treasure_ship .ship_wreck{
+  outline : none;
+  margin : 100px auto;
+}

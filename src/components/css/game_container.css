@@ -1,0 +1,56 @@
+.game_container{
+  width : 400px;
+  height : 420px;
+  background-color : #384050;
+  border-radius : 30px;
+  margin-bottom : 40px;
+  box-shadow : 0 3px 10px rgba(0,0,0,0.3);
+}
+
+.game_container > img{
+  width : 400px;
+  height : 320px;
+  border-radius : 30px 30px 0 0;
+}
+
+.game_container > div{
+  height : 50px;
+}
+
+.game_container .status{
+  box-sizing: border-box;
+  text-align : center;
+  padding : 10px 0;
+  color : #56AEFF;
+}
+
+.game_container > div > button{
+  box-sizing : border-box;
+  height : 50px;
+  width : 200px;
+  margin : 0;
+}
+
+.game_container > div > button:nth-child(1){
+  border-radius: 0 0 0 30px;
+  background-color : #FFCF24;
+  color : black;
+  box-shadow : none;
+}
+
+.game_container > div > button:nth-child(1):hover{
+  background-color : #222B3D;
+  color : #FFCF24;
+}
+
+.game_container > div > button:nth-child(2){
+  border-radius: 0 0 30px 0;
+  background-color : #FFCF24;
+  color : black;
+  box-shadow : none;
+}
+
+.game_container > div > button:nth-child(2):hover{
+  background-color : #222B3D;
+  color : #FFCF24;
+}

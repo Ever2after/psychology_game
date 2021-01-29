@@ -1,0 +1,35 @@
+.login{
+  width : 400px;
+  margin : 300px auto;
+  display : flex;
+  flex-direction: column;
+}
+
+.login input, .login button{
+  width : 400px;
+  height : 50px;
+  border-radius: 5px;
+  margin : 30px 0;
+}
+
+.login input{
+  box-sizing: border-box;
+  background-color : #384050;
+  outline : none;
+  border : 0;
+  margin : 0;
+  padding : 10px 20px;
+  color : #fff;
+  transition : .1s;
+  font-size : 18px;
+}
+
+.login input:focus{
+  border : 2px solid #FFCF24;
+}
+
+.login button{
+  box-sizing: border-box;
+  background-color : #FFCF24;
+  font-size : 18px;
+}
