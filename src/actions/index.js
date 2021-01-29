@@ -20,10 +20,12 @@ export function register_success(info){
   };
 }
 
-export function game_started(game_name){
+export function game_started(game_name, roomID, user_list){
   return {
     type : types.GAME_STARTED,
     game_name : game_name,
+    roomID : roomID,
+    user_list : user_list,
   }
 }
 

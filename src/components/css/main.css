@@ -82,14 +82,14 @@ input{
   padding : 0;
 }
 
-.generate_room .max_select > button:nth-child(4){
+.generate_room .max_select > button:nth-child(6){
   box-sizing: border-box;
   background-color : #222B3D;
   border : 2px solid #FFCF24;
   color : #FFCF24;
 }
 
-.generate_room .max_select > button:nth-child(4):hover{
+.generate_room .max_select > button:nth-child(6):hover{
   background-color : #FFCF24;
   color : #000000;
 }

@@ -27,11 +27,17 @@ class Game_container extends Component{
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  //return bindActionCreators(actions, dispatch);
-  return{
-    gameStart : (name)=>{dispatch(actions.game_started(name))},
+const mapStateToProps = (state) => {
+  return {
+    user_info : state.login.user_info,
   };
 }
 
-export default connect(null, mapDispatchToProps)(Game_container);
+const mapDispatchToProps = (dispatch) => {
+  //return bindActionCreators(actions, dispatch);
+  return{
+    gameStart : (name)=>{dispatch(actions.game_started(name, null, null))},
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game_container);

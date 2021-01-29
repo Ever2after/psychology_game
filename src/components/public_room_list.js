@@ -3,8 +3,6 @@ import { Route, Link } from 'react-router-dom';
 import './css/public_room_list.css';
 import Generate_room from './generate_room';
 import Public_room from './public_room';
-import socketIOClient from 'socket.io-client';
-var socket = socketIOClient();
 
 class Public_room_list extends Component{
   constructor(props){
@@ -15,24 +13,13 @@ class Public_room_list extends Component{
     }
   }
   componentDidMount(){
-    fetch('/public/room_list')
+    fetch('/room')
     .then(res=>res.json())
     .then(data=>{
         this.setState({
-          room_list : data.list,
+          room_list : data,
         });
         console.log(data);
-    });
-    // 실시간 방 정보 갱신이 필요하다면 소켓으로 update한다.
-    socket.on('new room', (data)=>{
-      this.setState({
-        room_list : data,
-      });
-    });
-  }
-  onClick1 = ()=>{
-    this.setState({
-      making_mode : !this.state.making_mode,
     });
   }
   onClick2 = e => {
@@ -47,8 +34,8 @@ class Public_room_list extends Component{
     const {room_list} = this.state;
     var list = [];
     for (var i=0;i<room_list.length;i++){
-      if(this.state.name==="전체" || this.state.name===room_list[i].info.name || room_list[i].user.length<room_list[i].max_number){
-        list.push(<Public_room data={room_list[i]} onClick={this.onClick2}/>);
+      if(this.state.name==="전체" || this.state.name===room_list[i].gameName || room_list[i].userList.length<room_list[i].maxNumber){
+        if(room_list[i].userList.length>0) list.push(<Public_room data={room_list[i]} onClick={this.onClick2}/>);
       }
     }
     return(
@@ -72,17 +59,5 @@ class Public_room_list extends Component{
     );
   }
 }
-
-/*
-<div className="menu">
-  <button className={this.state.making_mode ? 'cancle' : ''}
-    onClick={this.onClick1}>
-    {this.state.making_mode ? '취소' : '방 만들기'}
-  </button>
-  <Link to="/public_room_list">공개방 참여</Link>
-  <button>코드로 참여</button>
-  {this.state.making_mode ? <Generate_room history1={this.props.history}/> : <></>}
-</div>
-*/
 
 export default Public_room_list;

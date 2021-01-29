@@ -3,8 +3,9 @@ const http = require('http');
 const socketIO = require('socket.io');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mongoose    = require('mongoose');
+const uri = "mongodb+srv://everafter:Jusang20@cluster0.srjln.mongodb.net/psychology?retryWrites=true&w=majority";
 const port1 = 5000;
-const port2 = process.env.PORT || 3000;
 
 const app = express();
 app.use(cors());
@@ -19,57 +20,52 @@ const io = socketIO(server, {
   }
 });
 
-var availableRooms = [];
-var roomInfo = new Map();
-var onlineUser = new Map();
+//db connect---------------
+mongoose.connect(uri, {useUnifiedTopology: true, useNewUrlParser: true});
+
+var db = mongoose.connection;
+db.on('error', console.error);
+db.once('open', function(){
+    // CONNECTED TO MONGODB SERVER
+    console.log("Connected to mongod server");
+});
+
+// define models
+const Room = require('./models/room');
+
+// set router
+const router = require('./dbapis/roomapi')(app, Room);
+
 
 io.on('connection', socket=>{
-  console.log('connected');
-  socket.on('logined', (data)=>{
-    // 로그인 함.
-  })
 
   socket.on('generate room', (data)=>{
-    console.log('generated!');
-    // 기존 방 퇴장
-    socket.leave(data.roomID);
-    // room info update
-    roomInfo.set(data.roomID, data.info);
-    // room list update
-    var rooms = io.sockets.adapter.rooms;
-    availableRooms = returnRooms(rooms);
-    io.emit('new room', availableRooms);
+
   })
 
-
   socket.on('join room', (data) => {
-    // 이전에 속해있던 방은 퇴장 처리
-
-    // room join
     socket.join(data.roomID);
-    // update onlineuser list
-    onlineUser.set(socket.id, data.userID);
-    // room user list update
-    var rooms = io.sockets.adapter.rooms;
-    availableRooms = returnRooms(rooms);   // [{roomID : , user : , info : }]
-    io.emit('new room', availableRooms);
-    var userlist = [];
-    for(var user of Array.from(rooms.get(data.roomID))){
-      userlist.push(onlineUser.get(user));
+    io.to(data.roomID).emit('new user', {userID : data.userID});
+    if(!data.isOnwer){
+      Room.updateOne({roomID : data.roomID}, {$pull : {userList : {userID : data.userID}}}, (err)=>{
+        Room.updateOne({roomID : data.roomID}, {$push : {userList : {userID : data.userID}}}, (err)=>{
+          console.log(err);
+        });
+      });
     }
-    io.to(data.roomID).emit('new user', {user : userlist, newUser : data.userID});  // ['user1', 'user2']
   })
 
   socket.on('exit room', (data)=>{
-    // delete user
     socket.leave(data.roomID);
-    onlineUser.delete(data.roomID);
-    // alert disconnect
-    io.to(data.roomID).emit('client disconnect', {userID : data.userID});
-    // update room list
-    var rooms = io.sockets.adapter.rooms;
-    availableRooms = returnRooms(rooms);
-    io.emit('new room', availableRooms);
+    io.to(data.roomID).emit('delete user', {userID : data.userID});
+    Room.updateOne({roomID : data.roomID}, {$pull : {userList : {userID : data.userID}}}, (err)=>{
+      Room.findOne({roomID : data.roomID}, (err, room)=>{
+        console.log(room);
+        if(room.userList.length===0) Room.deleteOne({roomID : data.roomID}, (err)=>{
+          console.log(err);
+        });
+      });
+    });
   })
 
   socket.on('send message', (data)=>{
@@ -77,40 +73,9 @@ io.on('connection', socket=>{
   })
 
   socket.on('disconnect', ()=>{
-    // alert disconnection
-    io.emit('client disconnect', {userID : onlineUser.get(socket.id)});
-    // 속해있던 방 퇴장처리
-    // room list update
-    var rooms = io.sockets.adapter.rooms;
-    availableRooms = returnRooms(rooms);
-    io.emit('new room', availableRooms);
-    // onlineuser에서 delete
-    onlineUser.delete(socket.id);
+
   });
 });
-
-function returnRooms(rooms){
-  var roomlist = [];
-  if(rooms){
-    for(let [key, value] of rooms){
-      if(key.includes('room')) {
-        roomlist.push({roomID : key, user : Array.from(value), info : roomInfo.get(key)});
-      }
-    }
-  }
-  return roomlist;
-}
-
-app.get('/public/room_list', (req, res)=>{
-  console.log('public room list');
-  res.json({list : availableRooms});
-});
-
-app.get('/room/:roomID', (req, res)=>{
-  console.log('get room id');
-  res.json(roomInfo.get(req.params.roomID));
-});
-
 
 
 server.listen(port1, ()=>console.log(`listening on port ${port1}!`));

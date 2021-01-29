@@ -16,8 +16,8 @@ class Public_room extends Component{
         <div>
           <img src="./assets/2.jpg"/>
           <div>
-            <span className="name">{data.info.name}</span>
-            <span className="number">{data.user.length}/{data.info.max_number}명</span>
+            <span className="name">{data.gameName}</span>
+            <span className="number">{data.userList.length}/{data.maxNumber}명</span>
             <br/>
             <span>그 외 세부정보</span>
           </div>

@@ -13,6 +13,8 @@ import Moving_dots from './components/moving_dots/moving_dots';
 
 import Treasure_ship from './components/treasure_ship/treasure_ship';
 
+import Hero from './components/hero/hero';
+
 class App extends Component{
   render(){
     const mobile = window.innerWidth<768;
@@ -30,6 +32,8 @@ class App extends Component{
             <Route exact path="/moving_dots" component={Moving_dots}/>
 
             <Route exact path="/treasure_ship" component={Treasure_ship}/>
+
+            <Route exact path="/hero" component={Hero}/>
           </Switch>
         </div>
     );

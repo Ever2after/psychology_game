@@ -37,7 +37,7 @@ class Main extends Component{
           <Game_container history={this.props.history} link={"/moving_dots"} name={"동전 던지기 (1인)"} center={false}/>
           <Game_container history={this.props.history} link={"/moving_dots"} name={"점 움직이기 (1인)"} center={true}/>
           <Game_container history={this.props.history} link={"/moving_dots"} name={"죄수의 딜레마 (2인)"} center={false}/>
-          <Game_container history={this.props.history} link={"/moving_dots"} name={"외로운 영웅 (3~20인)"} center={false}/>
+          <Game_container history={this.props.history} link={"/hero"} name={"외로운 영웅 (3~20인)"} center={false}/>
           <Game_container history={this.props.history} link={"/treasure_ship"} name={"보물선 (3~20인)"} center={true}/>
           <Game_container history={this.props.history} link={"/moving_dots"} name={"거꾸로 경매 (3~20인)"} center={false}/>
         </div>
