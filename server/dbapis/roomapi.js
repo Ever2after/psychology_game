@@ -26,6 +26,13 @@ module.exports = function(app, Room)
         })
     });
 
+    // get public single room whose user number is max
+    app.get('/room/max/:gameName', function(req, res){
+      Room.findOne({gameName : req.params.gameName, isPublic : true}).sort('-userNumber').exec((err, room)=>{
+        res.json(room);
+      });
+    });
+
     // CREATE Room
     app.post('/room', function(req, res){
       var room = new Room();
@@ -50,6 +57,8 @@ module.exports = function(app, Room)
           if(req.body.gameName) room.gameName = req.body.gameName;
           if(req.body.maxNumber) room.maxNumber = req.body.maxNumber;
           if(req.body.roomOwner) room.roomOwner = req.body.roomOwner;
+          if(req.body.deleteUser) room.userNumber = room.userNumber-1;
+          if(req.body.addUser) room.userNumber = room.userNumber+1;
           room.save((err)=>{
             if(err) console.log(err);
             if(req.body.deleteUser) Room.updateOne({roomID : req.params.room_id}, {$pull : {userList : {userID : req.body.deleteUser}}}, (err)=>{

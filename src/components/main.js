@@ -34,12 +34,12 @@ class Main extends Component{
           {this.state.making_mode ? <Generate_room history1={this.props.history}/> : <></>}
         </div>
         <div className="games">
-          <Game_container history={this.props.history} link={"/moving_dots"} name={"동전 던지기 (1인)"} center={false}/>
-          <Game_container history={this.props.history} link={"/moving_dots"} name={"점 움직이기 (1인)"} center={true}/>
-          <Game_container history={this.props.history} link={"/moving_dots"} name={"죄수의 딜레마 (2인)"} center={false}/>
-          <Game_container history={this.props.history} link={"/hero"} name={"외로운 영웅 (3~20인)"} center={false}/>
-          <Game_container history={this.props.history} link={"/treasure_ship"} name={"보물선 (3~20인)"} center={true}/>
-          <Game_container history={this.props.history} link={"/moving_dots"} name={"거꾸로 경매 (3~20인)"} center={false}/>
+          <Game_container history={this.props.history} link={"/moving_dots"} multiple={false} name={"동전 던지기"} center={false}/>
+          <Game_container history={this.props.history} link={"/moving_dots"} multiple={false} name={"점 움직이기"} center={true}/>
+          <Game_container history={this.props.history} link={"/moving_dots"} multiple={true} name={"죄수의 딜레마"} center={false}/>
+          <Game_container history={this.props.history} link={"/hero"} multiple={true} name={"외로운 영웅"} center={false}/>
+          <Game_container history={this.props.history} link={"/treasure_ship"} multiple={true} name={"보물선"} center={true}/>
+          <Game_container history={this.props.history} link={"/moving_dots"} multiple={true} name={"거꾸로 경매"} center={false}/>
         </div>
       </div>
     );

@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import { Route, Link } from 'react-router-dom';
 import {connect} from 'react-redux';
 import './css/generate_room.css';
-import socketIOClient from 'socket.io-client';
-var socket = socketIOClient();
+import socket from '../socket.js';
 const crypto = require("crypto");
 
 class Generate_room extends Component{

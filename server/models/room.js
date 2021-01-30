@@ -8,6 +8,7 @@ const Room = new Schema({
   maxNumber : {type : Number},
   roomOwner : {type : String, default : null},
   userList : [{userID : {type : String}}],
+  userNumber : {type : Number, default : 1},
   createdDate : { type : Date, default : Date.now }
 });
 

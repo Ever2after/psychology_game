@@ -3,9 +3,8 @@ import { Route, Link } from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actions from '../actions';
 import './css/game_ready.css';
-import socketIOClient from 'socket.io-client';
+import socket from '../socket.js';
 const moment = require('moment-timezone');
-var socket = socketIOClient();
 
 class Game_ready extends Component{
   constructor(props){
@@ -15,44 +14,44 @@ class Game_ready extends Component{
       chat_list : [],
       room_name : '',
       max_number : '',
+      roomOwner : false,
     }
   }
+
   makeScrollTop = ()=>{
     var target = document.getElementsByClassName('chatting')[0];
     target.scrollTop = target.scrollHeight;
   }
+
   componentDidMount = () => {
+    window.addEventListener("beforeunload", (event)=>{
+      event.preventDefault();
+      event.returnValue='';
+    });
+
     const roomID = this.props.match.params.roomID;
-    // get roomInfo
-    fetch(`/room/id/${roomID}`)
-    .then(res=>res.json())
-    .then(data=>{
-      console.log(data);
-      this.setState({
-        room_name : data.gameName,
-        max_number : data.maxNumber,
-        user_list : data.userList,
-        roomOwner : data.roomOwner,
-      });
-      // alert someone joined room
-      socket.emit('join room', {
+
+    // alert someone joined room
+    socket.emit('join room', {
         roomID : roomID,
         userID : this.props.user_info.name,
-        isOwner : data.roomOwner===this.props.user_info.name,
-      });
     });
+
     // new user entered
     socket.on('new user', (data)=>{
       var _chatlist = this.state.chat_list;
       _chatlist.push({isAlert : true, userID : '', message : `${data.userID}님이 입장했습니다.`, time : Date.now()});
 
-      var _userlist = this.state.user_list;
-      if(this.state.roomOwner!==this.props.user_info.name){
-        _userlist.push({userID : data.userID});
-      }
-      this.setState({
-        user_list : _userlist,
-        chat_list : _chatlist,
+      fetch(`/room/id/${roomID}`)
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({
+          room_name : data.gameName,
+          max_number : data.maxNumber,
+          roomOwner : data.roomOwner,
+          user_list : data.userList,
+          chat_list : _chatlist,
+        });
       });
     });
 
@@ -67,14 +66,20 @@ class Game_ready extends Component{
     });
 
     socket.on('delete user', (data)=>{
-      var _userlist = this.state.user_list;
-      _userlist.splice(_userlist.indexOf(data.userID), 1);
       var _chatlist = this.state.chat_list;
       _chatlist.push({isAlert : true, userID : '', message : `${data.userID}님이 방을 나가셨습니다.`});
-      this.setState({
-        user_list : _userlist,
-        chat_list : _chatlist,
+      fetch(`/room/id/${roomID}`)
+      .then(res=>res.json())
+      .then(data=>{
+        this.setState({
+          user_list : data.userList,
+          chat_list : _chatlist,
+        });
       });
+    });
+
+    socket.on('game start', (data)=>{
+      this.gameStart();
     });
   }
   onChange = e=>{
@@ -99,18 +104,21 @@ class Game_ready extends Component{
     socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name});
     this.props.history.push('/public_room_list');
   }
+  // start game
   onClick3 = e=>{
-    var link_list =
+    socket.emit('game start', {roomID : this.props.match.params.roomID});
+    this.gameStart();
+  }
+  gameStart = ()=>{
     this.props.gameStart(this.state.room_name, this.props.match.params.roomID, [this.props.user_info.name]);
     switch(this.state.room_name){
       case '외로운 영웅' :
-        this.props.history.push('/hero');
+        this.props.history.push(`/hero/${this.props.match.params.roomID}`);
         break;
       case '보물선' :
-        this.props.history.push('/treasure_ship');
+        this.props.history.push(`/treasure_ship/${this.props.match.params.roomID}`);
         break;
       default :
-        this.props.history.push('/main');
         break;
     }
   }
@@ -153,6 +161,7 @@ class Game_ready extends Component{
         }
       }
     }
+    const isOwner = this.state.roomOwner == this.props.user_info.name;
     return(
       <div className = 'game_ready'>
         <div className="row1">
@@ -178,8 +187,9 @@ class Game_ready extends Component{
               <button className={this.state.chatting ? "active" : "nonactivate"} type="submit" onClick={this.onClick1}>전송</button>
             </div>
             <div className="button_container">
+              절대 새로고침(F5), 뒤로가기를 누르지 마시고, '나가기' 버튼을 눌러 퇴장해주세요.
               <button onClick={this.onClick2}>나가기</button>
-              <button onClick={this.onClick3}>게임 시작</button>
+              {isOwner ? <button onClick={this.onClick3}>게임 시작</button> : <></>}
             </div>
           </div>
           <div className="dummy"></div>

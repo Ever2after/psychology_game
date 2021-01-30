@@ -3,6 +3,9 @@ import { Route, Link } from 'react-router-dom';
 import './css/game_container.css';
 import {connect} from 'react-redux';
 import * as actions from '../actions';
+import socket from '../socket.js';
+const crypto = require("crypto");
+
 class Game_container extends Component{
   constructor(props){
     super(props);
@@ -10,8 +13,47 @@ class Game_container extends Component{
     }
   }
   onClick = e=>{
-    this.props.gameStart(this.props.name);
-    this.props.history.push(this.props.link);
+    // if it is solo player game
+    if(!this.props.multiple){
+      this.props.gameStart(this.props.name);
+      this.props.history.push(this.props.link+'/solo');
+    }
+    // else if it is multiplayer game
+    else {
+      fetch(`/room/max/${this.props.name}`)
+      .then(res=>res.json())
+      .then(data=>{
+        // if room doesn't exist, generate new room
+        if(!data){
+          socket.emit('generate room', null);
+          var roomID = crypto.randomBytes(10).toString('hex');
+          const room = {
+            roomID : roomID,
+            isPublic : true,
+            gameName : this.props.name,
+            maxNumber : 5,   // default : 5
+            roomOwner : this.props.user_info.name,
+            userList : [{userID : this.props.user_info.name}],
+          }
+          fetch('/room', {
+              method :"POST",
+              headers:{
+                'content-type':'application/json'
+              },
+              body:JSON.stringify(room)    // post객체를 작성한 주소로 post방식으로 보내버린다.
+            })
+            .then(res=>res.json())
+            .then(data=>{
+              console.log(data);
+            });
+          this.props.history.push(`/game_ready/${roomID}`);
+        }
+        // if room exist
+        else{
+          this.props.history.push(`/game_ready/${data.roomID}`);
+        }
+      });
+    }
   }
   render(){
     return(

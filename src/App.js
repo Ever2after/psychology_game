@@ -29,11 +29,11 @@ class App extends Component{
             <Route exact path="/generate_room" component={Generate_room}/>
             <Route path="/game_ready/:roomID" component={Game_ready}/>
 
-            <Route exact path="/moving_dots" component={Moving_dots}/>
+            <Route path="/moving_dots/:roomID" component={Moving_dots}/>
 
-            <Route exact path="/treasure_ship" component={Treasure_ship}/>
+            <Route path="/treasure_ship/:roomID" component={Treasure_ship}/>
 
-            <Route exact path="/hero" component={Hero}/>
+            <Route path="/hero/:roomID" component={Hero}/>
           </Switch>
         </div>
     );

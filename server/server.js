@@ -45,31 +45,45 @@ io.on('connection', socket=>{
 
   socket.on('join room', (data) => {
     socket.join(data.roomID);
-    io.to(data.roomID).emit('new user', {userID : data.userID});
-    if(!data.isOnwer){
-      Room.updateOne({roomID : data.roomID}, {$pull : {userList : {userID : data.userID}}}, (err)=>{
-        Room.updateOne({roomID : data.roomID}, {$push : {userList : {userID : data.userID}}}, (err)=>{
-          console.log(err);
-        });
+
+    Room.updateOne({roomID : data.roomID}, {$pull : {userList : {userID : data.userID}}}, (err)=>{
+      Room.updateOne({roomID : data.roomID}, {$push : {userList : {userID : data.userID}}}, (err)=>{
+        Room.findOne({roomID : data.roomID}, (err, room)=>{
+          room.userNumber = room.userList.length;
+          room.save((err)=>{
+            io.to(data.roomID).emit('new user', {userID : data.userID});
+          })
+        })
       });
-    }
+    });
   })
 
   socket.on('exit room', (data)=>{
     socket.leave(data.roomID);
-    io.to(data.roomID).emit('delete user', {userID : data.userID});
     Room.updateOne({roomID : data.roomID}, {$pull : {userList : {userID : data.userID}}}, (err)=>{
       Room.findOne({roomID : data.roomID}, (err, room)=>{
-        console.log(room);
-        if(room.userList.length===0) Room.deleteOne({roomID : data.roomID}, (err)=>{
-          console.log(err);
-        });
+        room.userNumber = room.userList.length;
+        room.save((err)=>{
+          if(room.userList.length===0) Room.deleteOne({roomID : data.roomID}, (err)=>{
+          });
+          io.to(data.roomID).emit('delete user', {userID : data.userID});
+        })
       });
     });
   })
 
   socket.on('send message', (data)=>{
+    console.log(data);
     io.to(data.roomID).emit('new message', {isAlert : false, userID : data.userID, message : data.message, time : Date.now()});
+  })
+
+  socket.on('game start', (data)=>{
+    io.to(data.roomID).emit('game start', {});
+  });
+
+  // hero
+  socket.on('hero appear', (data)=>{
+    io.to(data.roomID).emit('hero appear', {userID : data.userID});
   })
 
   socket.on('disconnect', ()=>{

@@ -40,6 +40,8 @@ function Moving_dots(props){
   let positions = [];
 
   useEffect(()=>{
+    // use full screen
+    window.document.documentElement.requestFullscreen();
     //---------initialize----------------------------//
     // canvas initialize
     canvas = canvasRef.current;
@@ -253,7 +255,7 @@ function Moving_dots(props){
 
   return(
     <div className="moving_dots">
-      <Timer start={timer} time={10000} width={width}/>
+      <Timer start={timer} time={10000} width={width} height={20} color="#FFCF24"/>
       <canvas ref={canvasRef} width={width} height={height}/>
       <button onClick={onClick1}>게임 포기</button>
     </div>

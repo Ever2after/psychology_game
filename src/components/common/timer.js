@@ -14,7 +14,7 @@ class Timer extends Component{
     var canvas = this.canvasRef.current;
     var ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#FFCF24";
+    ctx.fillStyle = this.props.color;
     ctx.fillRect(0,0,canvas.width, canvas.height);
     if(this.props.start) this.timer = setInterval(this.draw, 10);
   }
@@ -41,27 +41,27 @@ class Timer extends Component{
     if(ratio>=1) {
       clearInterval(this.timer);
       this.setState({count : 0});
-      ctx.fillStyle = "#FFCF24";
+      ctx.fillStyle = this.props.color;
       ctx.fillRect(0,0,canvas.width, canvas.height);
     }
 
     // time bar update
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#FFCF24";
+    ctx.fillStyle = this.props.color;
     ctx.fillRect(0,0,canvas.width*(1-ratio), canvas.height);
 
     // check it's stopped
     if(!this.props.start){
       clearInterval(this.timer);
       this.setState({count : 0});
-      ctx.fillStyle = "#FFCF24";
+      ctx.fillStyle = this.props.color;
       ctx.fillRect(0,0,canvas.width, canvas.height);
     }
   }
   render(){
     return (
       <>
-        <canvas ref={this.canvasRef} width={this.props.width} height="20"/>
+        <canvas ref={this.canvasRef} width={this.props.width} height={this.props.height}/>
       </>
     );
   }
