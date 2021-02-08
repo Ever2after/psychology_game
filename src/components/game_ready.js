@@ -12,7 +12,7 @@ class Game_ready extends Component{
     this.state = {
       user_list : [],
       chat_list : [],
-      room_name : '',
+      game_name : '',
       max_number : '',
       roomOwner : false,
     }
@@ -46,7 +46,7 @@ class Game_ready extends Component{
       .then(res=>res.json())
       .then(data=>{
         this.setState({
-          room_name : data.gameName,
+          game_name : data.gameName,
           max_number : data.maxNumber,
           roomOwner : data.roomOwner,
           user_list : data.userList,
@@ -106,17 +106,16 @@ class Game_ready extends Component{
   }
   // start game
   onClick3 = e=>{
-    socket.emit('game start', {roomID : this.props.match.params.roomID});
-    this.gameStart();
+    socket.emit('game start', {roomID : this.props.match.params.roomID, gameName : this.state.game_name});
   }
   gameStart = ()=>{
-    this.props.gameStart(this.state.room_name, this.props.match.params.roomID, [this.props.user_info.name]);
-    switch(this.state.room_name){
+    this.props.gameStart(this.state.game_name, this.props.match.params.roomID, this.state.user_list);
+    switch(this.state.game_name){
       case '외로운 영웅' :
-        this.props.history.push(`/hero/${this.props.match.params.roomID}`);
+        this.props.history.replace(`/hero/${this.props.match.params.roomID}`);
         break;
       case '보물선' :
-        this.props.history.push(`/treasure_ship/${this.props.match.params.roomID}`);
+        this.props.history.replace(`/treasure_ship/${this.props.match.params.roomID}`);
         break;
       default :
         break;
@@ -168,7 +167,7 @@ class Game_ready extends Component{
           <div className="dummy1"></div>
           <div className="info">
           <span>대기실</span>
-          <span>{this.state.room_name}</span>
+          <span>{this.state.game_name}</span>
           <span>{user_list.length}/{this.state.max_number}인</span>
           </div>
           <div className="dummy2"></div>

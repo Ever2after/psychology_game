@@ -16,10 +16,15 @@ class Timer extends Component{
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = this.props.color;
     ctx.fillRect(0,0,canvas.width, canvas.height);
-    if(this.props.start) this.timer = setInterval(this.draw, 10);
+    if(this.props.start) {
+      clearInterval(this.timer);
+      this.timer = setInterval(this.draw, 10);
+    }
   }
   componentWillReceiveProps = (nextProps)=>{
-    if(nextProps.start) {
+
+    if(nextProps.start && !this.props.start) {
+      clearInterval(this.timer);
       this.timer = setInterval(this.draw, 10);
       this.setState({count : 0});
     }
@@ -29,33 +34,36 @@ class Timer extends Component{
   }
   draw = ()=>{
     var canvas = this.canvasRef.current;
-    var ctx = canvas.getContext('2d');
+    if(canvas){
+      var ctx = canvas.getContext('2d');
 
-    // count time
-    this.setState({
-      count : this.state.count+1,
-    });
+      // count time
+      this.setState({
+        count : this.state.count+1,
+      });
 
-    // check timer is done
-    var ratio = this.state.count*10/this.props.time;
-    if(ratio>=1) {
-      clearInterval(this.timer);
-      this.setState({count : 0});
+      // check timer is done
+      var ratio = this.state.count*10/this.props.time;
+      if(ratio>=1) {
+        clearInterval(this.timer);
+        this.setState({count : 0});
+        ctx.fillStyle = this.props.color;
+        ctx.fillRect(0,0,canvas.width, canvas.height);
+        this.props.gameEnd();
+      }
+
+      // time bar update
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = this.props.color;
-      ctx.fillRect(0,0,canvas.width, canvas.height);
-    }
+      ctx.fillRect(0,0,canvas.width*(1-ratio), canvas.height);
 
-    // time bar update
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = this.props.color;
-    ctx.fillRect(0,0,canvas.width*(1-ratio), canvas.height);
-
-    // check it's stopped
-    if(!this.props.start){
-      clearInterval(this.timer);
-      this.setState({count : 0});
-      ctx.fillStyle = this.props.color;
-      ctx.fillRect(0,0,canvas.width, canvas.height);
+      // check it's stopped
+      if(!this.props.start){
+        clearInterval(this.timer);
+        this.setState({count : 0});
+        ctx.fillStyle = this.props.color;
+        ctx.fillRect(0,0,canvas.width, canvas.height);
+      }
     }
   }
   render(){

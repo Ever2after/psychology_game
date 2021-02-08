@@ -1,8 +1,11 @@
 import React, {Component} from 'react';
 import { Route, Link } from 'react-router-dom';
 import {connect} from 'react-redux';
+import * as actions from '../../actions';
 import '../css/hero.css';
 import Timer from '../common/timer';
+import Fame from './fame';
+import No_more_hero from './no_more_hero';
 import socket from '../../socket.js';
 
 const moment = require('moment-timezone');
@@ -11,18 +14,23 @@ class Hero extends Component{
   constructor(props){
     super(props);
     this.state = {
+      timer_run : true,
       chat_list : [],
     }
   }
+
   componentDidMount = ()=>{
-
-
-     this.setState({
-       roomID : window.location.href.split('/')[5],
-     });
+    // use full screen
+    //if(window.document) window.document.documentElement.requestFullscreen();
+    /*
+    this.timer = setTimeout(()=>{
+      this.setState({
+        timer_run : false,
+      });
+    }, 10000);
+    */
 
      socket.on('new message', (data)=>{
-       console.log(data);
        var _chatlist = this.state.chat_list;
        _chatlist.push(data);
        this.setState({
@@ -33,11 +41,21 @@ class Hero extends Component{
      });
 
      socket.on('hero appear', (data)=>{
-       this.setState({
-         hero : data.userID
-       });
+       if(!this.state.hero){
+         this.setState({
+           hero : data.userID
+         });
+       }
      });
   }
+
+  // after 10sec, game ends
+  gameEnd = ()=>{
+    this.setState({
+      timer_run : false,
+    });
+  }
+
   makeScrollTop = ()=>{
     var target = document.getElementsByClassName('chatting')[0];
     target.scrollTop = target.scrollHeight;
@@ -55,17 +73,19 @@ class Hero extends Component{
   }
   onClick1 = e =>{
     if(this.state.chatting){
-      socket.emit('send message', {roomID : this.state.roomID, userID : this.props.user_info.name, message : this.state.chatting});
+      socket.emit('send message', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name, message : this.state.chatting});
+      document.getElementById('chat').value = null;
+      this.setState({chatting : null});
     }
-    document.getElementById('chat').value = null;
-    this.setState({chatting : null});
   }
+  // hero appeared
   onClick2 = e=>{
-    socket.emit('hero appear', {roomID : this.state.roomID, userID : this.props.user_info.name});
+    socket.emit('hero appear', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name});
   }
   onClick3 = e=>{
     socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name});
-    this.props.history.push('/public_room_list');
+    this.props.gameEnd();
+    this.props.history.push('/');
   }
   render(){
     const {chat_list} = this.state;
@@ -101,13 +121,28 @@ class Hero extends Component{
     return(
       <div className='hero'>
         <div className="row1">
-        {this.state.hero ? <span>{this.state.hero}</span> : <>
-          <Timer start={false} width={1000} time={10000} height={20} color="#56AEFF"/>
-          <div className="hero_button">
-            <button onClick={this.onClick2}>영웅 출현</button>
-          </div>
-        </>}
-          <button onClick={this.onClick3}>나가기</button>
+        {this.state.hero
+          ?
+            <>
+              <Fame hero={this.state.hero}/>
+              <button className="exit" onClick={this.onClick3}>나가기</button>
+            </>
+          :
+          (this.state.timer_run
+           ?
+             <>
+               <Timer gameEnd={this.gameEnd} start={true} width={1000} time={10000} height={20} color="#56AEFF"/>
+               <div className="hero_button">
+                 <button onClick={this.onClick2}>영웅 출현</button>
+               </div>
+             </>
+           :
+            <>
+              <No_more_hero/>
+              <button className="exit" onClick={this.onClick3}>나가기</button>
+            </>
+          )
+        }
         </div>
         <div className="row2">
           <div className="chatting">
@@ -134,6 +169,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   //return bindActionCreators(actions, dispatch);
   return{
+    gameEnd : ()=>{dispatch(actions.game_ended())},
   };
 }
 

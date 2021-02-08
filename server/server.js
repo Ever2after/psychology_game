@@ -44,8 +44,12 @@ io.on('connection', socket=>{
   })
 
   socket.on('join room', (data) => {
+    var room_list = io.sockets.adapter.rooms.get(socket.id);
+    if(room_list) for(let room of room_list){
+      socket.leave(room);
+      console.log(room);
+    }
     socket.join(data.roomID);
-
     Room.updateOne({roomID : data.roomID}, {$pull : {userList : {userID : data.userID}}}, (err)=>{
       Room.updateOne({roomID : data.roomID}, {$push : {userList : {userID : data.userID}}}, (err)=>{
         Room.findOne({roomID : data.roomID}, (err, room)=>{
@@ -79,12 +83,39 @@ io.on('connection', socket=>{
 
   socket.on('game start', (data)=>{
     io.to(data.roomID).emit('game start', {});
+    switch(data.gameName){
+      case '외로운 영웅' :
+        break;
+      case '보물선' :
+        var time = [3000, 23000, 26000, 33000];
+        // round start (0~3)
+        setTimeout(()=>{
+          io.to(data.roomID).emit('round start', {});
+        }, time[0]);
+        // time end (3~23)
+        setTimeout(()=>{
+          io.to(data.roomID).emit('time end', {});
+        }, time[1]);
+        // result announce  (23~26)
+        setTimeout(()=>{
+          io.to(data.roomID).emit('result announce', {});
+        }, time[2]);
+        // end round  (26~33)
+        setTimeout(()=>{
+          io.to(data.roomID).emit('round end', {});
+        }, time[3]);
+    }
   });
 
-  // hero
+  //-------------------HERO----------------------------------//
   socket.on('hero appear', (data)=>{
     io.to(data.roomID).emit('hero appear', {userID : data.userID});
-  })
+  });
+
+  //-------------------TREASURE SHIP------------------------//
+  socket.on('choice', (data)=>{
+    io.to(data.roomID).emit('choice', {userID : data.userID, choice : data.choice});
+  });
 
   socket.on('disconnect', ()=>{
 

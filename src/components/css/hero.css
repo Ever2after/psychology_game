@@ -52,6 +52,19 @@
   color : #222B3D;
 }
 
+.hero .exit{
+  color : #FFCF24;
+  padding : 10px 30px;
+  border-radius: 50px;
+  border : 2px solid #FFCF24;
+  font-size: 18px;
+}
+
+.hero .exit:hover{
+  background-color: #FFCF24;
+  color : black;
+}
+
 .hero .chatting::-webkit-scrollbar{
   background-color : #384050;
   width : 25px;

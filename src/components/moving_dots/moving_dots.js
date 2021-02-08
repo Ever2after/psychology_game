@@ -8,7 +8,7 @@ import '../css/moving_dots.css';
 function Moving_dots(props){
   let canvas;
   let canvasRef = createRef();
-  const height = 800;
+  const height = 950;
   const width = 1800;
   let pos = {
     drawable : false,
@@ -255,7 +255,7 @@ function Moving_dots(props){
 
   return(
     <div className="moving_dots">
-      <Timer start={timer} time={10000} width={width} height={20} color="#FFCF24"/>
+      <Timer gameEnd={()=>{}} start={timer} time={10000} width={width} height={20} color="#FFCF24"/>
       <canvas ref={canvasRef} width={width} height={height}/>
       <button onClick={onClick1}>게임 포기</button>
     </div>

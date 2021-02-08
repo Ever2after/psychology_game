@@ -1,0 +1,18 @@
+.fame{
+  text-align: center;
+  position : relative;
+  width : 800px;
+  height : 800px;
+  margin : 0 auto;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.fame span{
+  display: inline-block;
+  margin-top : 290px;
+  font-size : 60px;
+  color : #FFCF24;
+  font-weight: bold;
+}

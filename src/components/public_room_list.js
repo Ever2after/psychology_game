@@ -34,8 +34,8 @@ class Public_room_list extends Component{
     const {room_list} = this.state;
     var list = [];
     for (var i=0;i<room_list.length;i++){
-      if(this.state.name==="전체" || this.state.name===room_list[i].gameName || room_list[i].userList.length<room_list[i].maxNumber){
-        if(room_list[i].userList.length>0) list.push(<Public_room data={room_list[i]} onClick={this.onClick2}/>);
+      if(this.state.name==="전체" || this.state.name===room_list[i].gameName){
+        if(room_list[i].userList.length<room_list[i].maxNumber && room_list[i].userList.length>0) list.push(<Public_room data={room_list[i]} onClick={this.onClick2}/>);
       }
     }
     return(
