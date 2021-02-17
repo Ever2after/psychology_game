@@ -20,16 +20,6 @@ class Hero extends Component{
   }
 
   componentDidMount = ()=>{
-    // use full screen
-    //if(window.document) window.document.documentElement.requestFullscreen();
-    /*
-    this.timer = setTimeout(()=>{
-      this.setState({
-        timer_run : false,
-      });
-    }, 10000);
-    */
-
      socket.on('new message', (data)=>{
        var _chatlist = this.state.chat_list;
        _chatlist.push(data);
@@ -73,17 +63,17 @@ class Hero extends Component{
   }
   onClick1 = e =>{
     if(this.state.chatting){
-      socket.emit('send message', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name, message : this.state.chatting});
+      socket.emit('send message', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname, message : this.state.chatting});
       document.getElementById('chat').value = null;
       this.setState({chatting : null});
     }
   }
   // hero appeared
   onClick2 = e=>{
-    socket.emit('hero appear', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name});
+    socket.emit('hero appear', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname});
   }
   onClick3 = e=>{
-    socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name});
+    socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname});
     this.props.gameEnd();
     this.props.history.push('/');
   }
@@ -98,7 +88,7 @@ class Hero extends Component{
           chat.push(<div className="alert">{chat_list[i].message}</div>);
         }
         // if it was written by myself
-        else if(chat_list[i].userID===this.props.user_info.name){
+        else if(chat_list[i].userID===this.props.user_info.nickname){
           chat.push(
             <div className="mychat">
               <span>{time}</span>

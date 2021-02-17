@@ -47,8 +47,10 @@ class Public_room_list extends Component{
             name="죄수의 딜레마" onClick={this.onClick4}>죄수의 딜레마</button>
           <button className={this.state.name==="외로운 영웅" ? "select" : ""}
             name="외로운 영웅" onClick={this.onClick4}>외로운 영웅</button>
-          <button className={this.state.name==="해적선" ? "select" : ""}
-            name="해적선" onClick={this.onClick4}>해적선</button>
+          <button className={this.state.name==="보물선" ? "select" : ""}
+            name="보물선" onClick={this.onClick4}>보물선</button>
+          <button className={this.state.name==="전쟁과 평화" ? "select" : ""}
+            name="전쟁과 평화" onClick={this.onClick4}>전쟁과 평화</button>
           <button className={this.state.name==="거꾸로 경매" ? "select" : ""}
             name="거꾸로 경매" onClick={this.onClick4}>거꾸로 경매</button>
         </div>

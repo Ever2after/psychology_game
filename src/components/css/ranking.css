@@ -1,0 +1,170 @@
+.ranking{
+  box-sizing: border-box;
+  width : 1200px;
+  height : auto;
+  margin : 0 auto;
+  padding : 50px;
+  background : rgba(56, 64, 80, 0.5);
+}
+
+.ranking .rank > button{
+  color : #707070;
+  font-size : 28px;
+  margin : 0 15px;
+}
+
+.ranking .rank .select{
+  color : #FFCF24;
+}
+
+.ranking .ranker{
+  margin-top : 50px;
+  display : flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.ranking .ranker > div{
+  background-color : #424958;
+  color : #fff;
+  border-radius : 24px;
+  box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+}
+
+.ranking .sub{
+  box-sizing: border-box;
+  width : 300px;
+  height : 180px;
+  margin : 0;
+  padding : 20px 0;
+}
+
+.ranking .sub .name{
+  text-align : center;
+  font-size : 24px;
+  padding-bottom : 10px;
+}
+
+.ranking .sub .name > span:nth-child(1){
+  color : #56AEFF;
+}
+
+.ranking .sub .status{
+  display : flex;
+  flex-direction: row;
+  justify-content: center;
+  line-height : 24px;
+  font-size : 16px;
+}
+
+.ranking .sub .status > div:nth-child(1){
+  width : 150px;
+  text-align : right;
+  color : #FFCF24;
+}
+
+.ranking .sub .status > div:nth-child(2){
+  box-sizing: border-box;
+  width : 150px;
+  padding-left : 20px;
+}
+
+.ranking .main{
+  box-sizing: border-box;
+  width : 400px;
+  height : 210px;
+  margin : 0 50px;
+  padding : 24px 0;
+}
+
+.ranking .main .name{
+  text-align : center;
+  font-size : 28px;
+  padding-bottom : 10px;
+}
+
+.ranking .main .name > span:nth-child(1){
+  color : #56AEFF;
+}
+
+.ranking .main .status{
+  display : flex;
+  flex-direction: row;
+  justify-content: center;
+  line-height : 28px;
+  font-size : 18px;
+}
+
+.ranking .main .status > div:nth-child(1){
+  width : 150px;
+  text-align : right;
+  color : #FFCF24;
+}
+
+.ranking .main .status > div:nth-child(2){
+  box-sizing: border-box;
+  width : 150px;
+  padding-left : 20px;
+}
+
+.ranking hr{
+  border : 0.5px solid #707070;
+}
+
+.ranking table{
+  margin-top : 50px;
+  width : 100%;
+  border-spacing : 0;
+  color : #fff;
+  text-align : left;
+  box-shadow : 0px 5px 5px rgba(0,0,0,0.1);
+}
+
+.ranking tr{
+  height : 50px;
+}
+
+.ranking .table-header{
+  height : 55px;
+  background-color: #222B3D;
+  color : #FFCF24;
+}
+
+.ranking .odd{
+  background-color: #424958;
+}
+
+.ranking .even{
+  background-color: #384050;
+}
+
+.ranking .table-rank{
+  width : 50px;
+  text-align : center;
+}
+
+.ranking .table-nickname{
+  width : 240px;
+}
+
+.ranking .table-point{
+  width : 100px;
+  text-align : right;
+}
+
+.ranking .table-level{
+  width : 100px;
+  text-align : right;
+}
+
+.ranking .table-game{
+  width : 100px;
+  text-align : right;
+}
+
+.ranking .table-ppg{
+  width : 120px;
+  text-align : right;
+  padding-right : 30px;
+}

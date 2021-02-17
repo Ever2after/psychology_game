@@ -3,7 +3,7 @@ import * as types from '../actions/ActionTypes';
 const initialState = {
   is_logined : false,
   user_info : {
-    name : null,
+    nickname : null,
   },
 };
 

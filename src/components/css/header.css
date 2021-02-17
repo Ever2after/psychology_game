@@ -1,5 +1,5 @@
 .header{
-  height : 65px;
+  height : 50px;
   box-sizing: border-box;
   display : flex;
   width : 100%;
@@ -11,7 +11,7 @@
   display : inline-block;
   width : 400px;
   text-align : center;
-  font-size : 22px;
+  font-size : 20px;
   margin : auto 0;
   color : #FFCF24;
   font-weight: bold;
@@ -23,8 +23,8 @@
   justify-content: space-between;
 }
 
-.header div a, .header div span{
-  font-size : 20px;
+.header div a, .header div button{
+  font-size : 18px;
   color : #fff;
   display : inline-block;
   margin : auto 60px;

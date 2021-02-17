@@ -72,7 +72,7 @@ class Treasure_ship extends Component{
       // send choie info to server
       socket.emit('choice', {
         roomID : this.state.roomID,
-        userID : this.props.user_info.name,
+        userID : this.props.user_info.nickname,
         choice : (this.state.choice ? this.state.choice : 'left')
       });
     });
@@ -105,7 +105,7 @@ class Treasure_ship extends Component{
       user_gold = new Map([...user_gold.entries()].sort((a,b)=>b[1]-a[1]));
       var cnt = 1;
       user_gold.forEach((value, key)=>{
-        if(key===this.props.user_info.name) {
+        if(key===this.props.user_info.nickname) {
           this.setState({ranking : cnt});
         }
         cnt++;
@@ -133,7 +133,7 @@ class Treasure_ship extends Component{
       });
       // start new round
       if(this.state.round!==6 &&
-        this.props.user_info.name===this.state.room_owner){
+        this.props.user_info.nickname===this.state.room_owner){
         socket.emit('game start', {roomID : this.state.roomID, gameName : this.state.game_name});
       }
     });
@@ -217,7 +217,7 @@ class Treasure_ship extends Component{
   // send chat
   onClick1 = e =>{
     if(this.state.chatting){
-      socket.emit('send message', {roomID : this.state.roomID, userID : this.props.user_info.name, message : this.state.chatting});
+      socket.emit('send message', {roomID : this.state.roomID, userID : this.props.user_info.nickname, message : this.state.chatting});
       document.getElementById('chat').value = null;
       this.setState({chatting : null});
     }
@@ -231,7 +231,7 @@ class Treasure_ship extends Component{
     }
   }
   onClick3 = e=>{
-    socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name});
+    socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname});
     this.props.gameEnd();
     this.props.history.push('/');
   }
@@ -247,7 +247,7 @@ class Treasure_ship extends Component{
           chat.push(<div className="alert">{chat_list[i].message}</div>);
         }
         // if it was written by myself
-        else if(chat_list[i].userID===this.props.user_info.name){
+        else if(chat_list[i].userID===this.props.user_info.nickname){
           chat.push(
             <div className="mychat">
               <span>{time}</span>
@@ -288,11 +288,11 @@ class Treasure_ship extends Component{
       <div className='treasure_ship'>
         <div className="row1">
 
-          <Timer gameEnd={()=>{}} time={20000} start={this.state.timer} width={1200} height={20} color={"#FFCF24"}/>
+          <Timer gameEnd={()=>{}} time={20000} start={this.state.timer} width={1200} height={20} color={"#56AEFF"}/>
 
           <div className="round_info">
             <span>#{this.state.ranking}</span>
-            <span>{this.state.user_gold.get(this.props.user_info.name)}G</span>
+            <span>{this.state.user_gold.get(this.props.user_info.nickname)}G</span>
             <span>ROUND {this.state.round}</span>
           </div>
 

@@ -32,8 +32,8 @@ class Game_container extends Component{
             isPublic : true,
             gameName : this.props.name,
             maxNumber : 5,   // default : 5
-            roomOwner : this.props.user_info.name,
-            userList : [{userID : this.props.user_info.name}],
+            roomOwner : this.props.user_info.nickname,
+            userList : [{userID : this.props.user_info.nickname}],
           }
           fetch('/room', {
               method :"POST",

@@ -16,14 +16,36 @@ class Login extends Component{
     })
   }
   onClick1 = ()=>{
-    this.props.handleSuccess({name : this.state.name});
-    //window.location.replace('/');
+    const post = {   //전송하려는 post obj
+      email:this.state.email,
+      password :this.state.password,
+    }
+    fetch('/auth/login',{
+      method :"POST",
+      headers:{
+        'content-type':'application/json'
+      },
+      credentials: 'include',
+      body:JSON.stringify(post)    // post객체를 작성한 주소로 post방식으로 보내버린다.
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      if(data.is_logined){
+        this.props.handleSuccess(data.user);
+        this.props.history.push('/');
+      }
+      else{
+        alert('잘못된 Email 또는 비밀번호 입니다.');
+      }
+    });
   }
   render(){
     return(
       <div className='login'>
-        <input type="text" name="name" onChange={this.onChange} placeholder="ID"/>
-        <button onClick={this.onClick1}>로그인</button>
+        <input type="email" name="email" onChange={this.onChange} required placeholder="Email"/>
+        <input type="password" name="password" onChange={this.onChange} required placeholder="Password"/>
+        <button onClick={this.onClick1}>Login</button>
+        <Link to="/register">Sign Up</Link>
       </div>
     );
   }

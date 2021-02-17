@@ -26,9 +26,9 @@ class Generate_room extends Component{
       roomID : roomID,
       isPublic : this.state.isPublic,
       gameName : this.state.name,
-      maxNumber : this.state.max_number,
-      roomOwner : this.props.user_info.name,
-      userList : [{userID : this.props.user_info.name}],
+      maxNumber : (this.state.name==='죄수의 딜레마' ? 2 : this.state.max_number),
+      roomOwner : this.props.user_info.nickname,
+      userList : [{userID : this.props.user_info.nickname}],
     }
     fetch('/room', {
         method :"POST",
@@ -79,6 +79,8 @@ class Generate_room extends Component{
             name="외로운 영웅" onClick={this.onClick4}>외로운 영웅</button>
           <button className={this.state.name==="보물선" ? "select" : ""}
             name="보물선" onClick={this.onClick4}>보물선</button>
+          <button className={this.state.name==="전쟁과 평화" ? "select" : ""}
+            name="전쟁과 평화" onClick={this.onClick4}>전쟁과 평화</button>
           <button className={this.state.name==="거꾸로 경매" ? "select" : ""}
             name="거꾸로 경매" onClick={this.onClick4}>거꾸로 경매</button>
         </div>

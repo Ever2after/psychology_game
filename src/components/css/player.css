@@ -1,0 +1,42 @@
+.player {
+  height : 300px;
+  width : 200px;
+}
+
+.player .targeted{
+  font-size : 36px;
+  color : #fff;
+}
+
+.player .emoji{
+  font-size : 120px;
+}
+
+.player .userinfo{
+  box-sizing: border-box;
+  width : 200px;
+  height : 85px;
+  padding : 5px;
+  font-size : 24px;
+  border : 1px solid #707070;
+  border-radius : 18px;
+  background-color : rgba(0,0,0,0.5);
+  color : #fff;
+  display : flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.player .status > span{
+  display : inline-block;
+}
+
+.player .status{
+  display : flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.player .selected{
+  border : 2px solid #FFCF24;
+}

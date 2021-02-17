@@ -24,18 +24,15 @@ class Game_ready extends Component{
   }
 
   componentDidMount = () => {
-    window.addEventListener("beforeunload", (event)=>{
-      event.preventDefault();
-      event.returnValue='';
-    });
-
     const roomID = this.props.match.params.roomID;
 
     // alert someone joined room
-    socket.emit('join room', {
-        roomID : roomID,
-        userID : this.props.user_info.name,
-    });
+    setTimeout(()=>{
+      socket.emit('join room', {
+          roomID : roomID,
+          userID : this.props.user_info.nickname,
+      });
+    }, 500);
 
     // new user entered
     socket.on('new user', (data)=>{
@@ -95,18 +92,27 @@ class Game_ready extends Component{
   }
   onClick1 = e =>{
     if(this.state.chatting){
-      socket.emit('send message', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name, message : this.state.chatting});
+      socket.emit('send message', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname, message : this.state.chatting});
     }
     document.getElementById('chat').value = null;
     this.setState({chatting : null});
   }
   onClick2 = e=>{
-    socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.name});
+    socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname});
     this.props.history.push('/public_room_list');
   }
   // start game
   onClick3 = e=>{
     socket.emit('game start', {roomID : this.props.match.params.roomID, gameName : this.state.game_name});
+  }
+  onClick4 = e=>{
+    e.preventDefault();
+    const el = document.createElement('textarea');
+    el.value = this.props.match.params.roomID;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
   }
   gameStart = ()=>{
     this.props.gameStart(this.state.game_name, this.props.match.params.roomID, this.state.user_list);
@@ -117,6 +123,11 @@ class Game_ready extends Component{
       case '보물선' :
         this.props.history.replace(`/treasure_ship/${this.props.match.params.roomID}`);
         break;
+      case '죄수의 딜레마' :
+        this.props.history.replace(`/prisoner/${this.props.match.params.roomID}`);
+        break;
+      case '전쟁과 평화' :
+        this.props.history.replace(`/war_and_peace/${this.props.match.params.roomID}`);
       default :
         break;
     }
@@ -140,7 +151,7 @@ class Game_ready extends Component{
           chat.push(<div className="alert">{chat_list[i].message}</div>);
         }
         // if it was written by myself
-        else if(chat_list[i].userID===this.props.user_info.name){
+        else if(chat_list[i].userID===this.props.user_info.nickname){
           chat.push(
             <div className="mychat">
               <span>{time}</span>
@@ -160,15 +171,16 @@ class Game_ready extends Component{
         }
       }
     }
-    const isOwner = this.state.roomOwner == this.props.user_info.name;
+    const isOwner = this.state.roomOwner == this.props.user_info.nickname;
     return(
       <div className = 'game_ready'>
         <div className="row1">
           <div className="dummy1"></div>
           <div className="info">
-          <span>대기실</span>
-          <span>{this.state.game_name}</span>
-          <span>{user_list.length}/{this.state.max_number}인</span>
+            <span>대기실</span>
+            <span>{this.state.game_name}</span>
+            <button onClick={this.onClick4}>입장 코드 복사</button>
+            <span>{user_list.length}/{this.state.max_number}인</span>
           </div>
           <div className="dummy2"></div>
         </div>
@@ -186,7 +198,7 @@ class Game_ready extends Component{
               <button className={this.state.chatting ? "active" : "nonactivate"} type="submit" onClick={this.onClick1}>전송</button>
             </div>
             <div className="button_container">
-              절대 새로고침(F5), 뒤로가기를 누르지 마시고, '나가기' 버튼을 눌러 퇴장해주세요.
+              '나가기' 버튼을 눌러야 정상적으로 퇴장처리가 됩니다.
               <button onClick={this.onClick2}>나가기</button>
               {isOwner ? <button onClick={this.onClick3}>게임 시작</button> : <></>}
             </div>
