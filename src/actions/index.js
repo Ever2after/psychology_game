@@ -13,6 +13,13 @@ export function login_failed(){
   };
 }
 
+export function guest_mode(info){
+  return{
+    type : types.GUEST_MODE,
+    user_info : info
+  }
+}
+
 export function register_success(info){
   return {
     type : types.REGISTER_SUCCESS,

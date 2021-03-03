@@ -1,6 +1,6 @@
 .public_room{
   box-sizing: border-box;
-  width : 400px;
+  width : 380px;
   height : 140px;
   border-radius: 17px;
   margin-left : 50px;
@@ -47,4 +47,49 @@
   padding : 8px 28px;
   float : right;
   margin : 15px 0 0 0;
+}
+
+@media screen and (max-width: 768px) {
+  .public_room{
+    width : 320px;
+    box-sizing: border-box;
+    height : 80px;
+    border-radius: 10px;
+    margin : 5px 0;
+    background-color : #384050;
+    box-shadow : 0px 3px 6px rgba(0,0,0,0.16);
+    padding : 10px;
+    color : #fff;
+  }
+
+  .public_room > div{
+    display : flex;
+    flex-direction: row;
+  }
+
+  .public_room > div > img{
+    height : 60px;
+    width : 60px;
+    margin-right : 10px;
+    border-radius: 18px;
+  }
+
+  .public_room > div > div{
+    width : 230px;
+  }
+
+  .public_room > div > div > span{
+    line-height : 30px;
+    display : inline-block;
+  }
+
+  .public_room .name{
+    font-size : 20px;
+  }
+
+  .public_room .number{
+    font-size : 18px;
+    float : right;
+  }
+
 }

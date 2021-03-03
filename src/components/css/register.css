@@ -9,7 +9,7 @@
   width : 350px;
   height : 45px;
   border-radius: 5px;
-  margin : 10px 0;
+  margin : 10px 25px;
   font-size : 16px;
 }
 
@@ -26,4 +26,36 @@
 .register button{
   box-sizing: border-box;
   background-color : #FFCF24;
+}
+
+@media screen and (max-width: 768px) {
+  .register form{
+    width : 240px;
+    margin : 200px auto;
+    display : flex;
+    flex-direction: column;
+  }
+
+  .register input, .register button{
+    width : 240px;
+    height : 40px;
+    border-radius: 5px;
+    margin : 10px 0;
+    font-size : 14px;
+  }
+
+  .register input{
+    box-sizing: border-box;
+    background-color : #384050;
+    outline : none;
+    border : 0;
+    padding : 10px 15px;
+    color : #fff;
+    transition : .1s;
+  }
+
+  .register button{
+    box-sizing: border-box;
+    background-color : #FFCF24;
+  }
 }

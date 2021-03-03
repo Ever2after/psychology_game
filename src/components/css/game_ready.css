@@ -189,3 +189,145 @@
 .game_ready .button_container > button:nth-child(2){
   background-color : #FFCF24;
 }
+
+@media screen and (max-width: 768px) {
+  .game_ready{
+    width : 300px;
+    margin : 40px auto;
+  }
+
+  /*----------top----------*/
+
+  .game_ready .top{
+    margin-bottom : 20px;
+  }
+
+  .game_ready .top label{
+    font-size : 26px;
+    font-weight: bold;
+  }
+
+  .game_ready .top > span:nth-child(2){
+    font-size : 16px;
+    display : inline-block;
+    margin-left : 10px;
+    font-weight: bold;
+    color : #ffcf24;
+  }
+
+  .game_ready .top > span:nth-child(3){
+    font-size: 18px;
+    font-weight: bold;
+    display : inline-block;
+    float : right;
+    margin-top : 7px;
+  }
+
+  /*-------middle-------*/
+  .game_ready .middle label{
+    font-size : 18px;
+    font-weight: bold;
+    display : inline-block;
+    margin-bottom : 10px;
+  }
+
+  .game_ready .middle .userlist{
+    background-color : #384050;
+    height : 100px;
+    display : flex;
+    flex-direction: column;
+    flex-wrap : wrap;
+    box-sizing: border-box;
+    padding : 10px;
+    font-size : 12px;
+    margin-bottom : 20px;
+  }
+
+  /*------------bottom---------*/
+  .game_ready .bottom label{
+    font-size : 18px;
+    font-weight: bold;
+    display : inline-block;
+    margin-bottom : 10px;
+  }
+
+  .game_ready .bottom .chatting{
+    background-color : #384050;
+    height : 200px;
+    margin : 0;
+    padding : 10px;
+  }
+
+  .game_ready .chatting .chat > span:nth-child(1){ font-size : 12px;}
+  .game_ready .chatting .chat > span:nth-child(2){ font-size : 12px;}
+  .game_ready .chatting .chat > span:nth-child(3){ font-size : 10px;}
+  .game_ready .chatting .mychat > span:nth-child(2){ font-size : 12px;}
+  .game_ready .chatting .mychat > span:nth-child(1){ font-size : 10px;}
+
+  .game_ready .chatting .alert {
+    font-size : 10px;
+    width : 270px;
+    padding : 5px 0;
+  }
+
+  .game_ready .chatting::-webkit-scrollbar{
+    width : 13px;
+  }
+
+  .game_ready .chatting::-webkit-scrollbar-thumb{
+    border: 3px solid transparent;
+  }
+
+  .game_ready .chatting_input{
+    height : 28px;
+    display : flex;
+    flex-direction: row;
+  }
+
+  .game_ready .chatting_input > input{
+    box-sizing: border-box;
+    height : 28px;
+    flex : 1;
+    border : 1px solid #FFCF24;
+    border-radius: 0;
+    background-color : #373B56;
+    padding : 10px;
+    font-size : 12px;
+    color : #fff;
+    margin : 0;
+  }
+
+  .game_ready .chatting_input > button{
+    height : 28px;
+    width : 44px;
+    flex : none;
+    background-color : #FFCF24;
+    box-sizing: border-box;
+    font-size : 10px;
+  }
+
+  /*----------btn container------*/
+  .game_ready .btn_container{
+    display : flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top : 20px;
+  }
+
+  .game_ready .btn_container button{
+    width : 100px;
+    height : 30px;
+    box-sizing: border-box;
+    border : 1px solid #ffcf24;
+    margin : 0 10px;
+  }
+
+  .game_ready .btn_container button:nth-child(1){
+    color : #ffcf24;
+  }
+
+  .game_ready .btn_container button:nth-child(2){
+    background-color : #ffcf24;
+  }
+
+}

@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import * as actions from '../../actions';
 import Timer from '../common/timer';
 import '../css/treasure_ship.css';
+import Game_result from '../game_result';
 import socket from '../../socket.js';
 import src1 from './assets/ship1.png';
 import src2 from './assets/ship2.png';
@@ -28,6 +29,8 @@ class Treasure_ship extends Component{
       on_board_gold : 0,
       left_gold : 0,
       ranking : 1, // 1 ~ user.length
+      result_mode : false,
+      result : new Map(),
     }
   }
   getData = ()=>{
@@ -47,6 +50,22 @@ class Treasure_ship extends Component{
         game_name : data.gameName,
         user_gold : userGold,
       });
+    });
+  }
+  gameEnd = ()=>{
+    var result = new Map();
+    for(let [key, value] of this.state.user_gold){
+      result.set(key, Math.floor(value/10));
+    }
+    this.setState({
+      result : result,
+      result_mode : true,
+    });
+    socket.emit('exit room', {roomID : this.state.roomID, userID : this.props.user_info.nickname});
+    socket.emit('game result', {
+      userID : this.props.user_info.nickname,
+      point : result.get(this.props.user_info.nickname),
+      exp : 1500,
     });
   }
   componentDidMount = ()=>{
@@ -136,6 +155,7 @@ class Treasure_ship extends Component{
         this.props.user_info.nickname===this.state.room_owner){
         socket.emit('game start', {roomID : this.state.roomID, gameName : this.state.game_name});
       }
+      else if(this.state.round===6) this.gameEnd();
     });
     //-------------game step process done----------------//
     //-------------game behavior-------------------------//
@@ -284,7 +304,7 @@ class Treasure_ship extends Component{
       leader_board.push(<span>{cnt}. {key} - {value}G</span>);
       cnt++;
     });
-    return(
+    if(!this.state.result_mode) return(
       <div className='treasure_ship'>
         <div className="row1">
 
@@ -340,6 +360,9 @@ class Treasure_ship extends Component{
 
         </div>
       </div>
+    );
+    else return(
+      <Game_result data = {this.state.result}/>
     );
   }
 }

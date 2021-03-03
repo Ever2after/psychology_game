@@ -1,0 +1,117 @@
+.generate_room{
+  margin : 30px 0;
+}
+
+.generate_room > div{
+  display : flex;
+  flex-direction: row;
+  margin-bottom : 30px;
+}
+
+.generate_room > div > button{
+  background-color : #384050;
+  color : #fff;
+  border-radius : 50px;
+}
+
+.generate_room > div > .select{
+  background-color : #FFCF24;
+  color : #000000;
+}
+
+.generate_room > div > .circle{
+  box-sizing: border-box;
+  width : 45px;
+  padding : 0;
+}
+
+.generate_room .max_select > button:nth-child(6){
+  box-sizing: border-box;
+  background-color : #222B3D;
+  border : 2px solid #FFCF24;
+  color : #FFCF24;
+}
+
+.generate_room .max_select > button:nth-child(6):hover{
+  background-color : #FFCF24;
+  color : #000000;
+}
+
+.generate_room .max_select > button:nth-child(2){
+  padding : 10px 50px;
+}
+
+@media screen and (max-width: 768px) {
+  .generate_room{
+    width : 300px;
+    margin : 40px auto;
+  }
+
+  .generate_room > label{
+    display : block;
+    font-size : 26px;
+    color : #fff;
+    width : 300px;
+    margin : 10px auto;
+    font-weight: bold;
+  }
+
+  .generate_room > span{
+    color : #fff;
+    display : inline-block;
+    margin-bottom : 100px;
+  }
+
+  .generate_room select{
+    box-sizing: border-box;
+    width : 300px;
+    height : 45px;
+    background-color : #384050;
+    border : none;
+    outline : none;
+    color : #fff;
+    padding : 10px 15px;
+    font-size : 14px;
+    margin-bottom : 30px;
+  }
+
+  .generate_room .wrap1{
+    display : flex;
+    justify-content: space-between;
+  }
+
+  .generate_room .wrap1 > button{
+    height : 45px;
+    font-size : 14px;
+    box-shadow : 0 5px 5px rgba(0,0,0,0.1);
+  }
+
+  .generate_room .wrap1 > button:nth-child(2){
+    width : 170px;
+    background-color : #ffcf24;
+    color : black;
+  }
+
+  .generate_room .wrap2{
+    display : flex;
+    justify-content: space-around;
+  }
+
+  .generate_room .wrap2 > button{
+    height : 45px;
+    padding : 0 35px;
+    font-size : 14px;
+    box-shadow : 0 5px 5px rgba(0,0,0,0.1);
+  }
+
+  .generate_room > button{
+    width : 300px;
+    background : #ffcf24;
+    height : 45px;
+    border : none;
+    border-radius: 5px;
+    font-size : 14px;
+    box-shadow : 0 5px 5px rgba(0,0,0,0.1);
+  }
+
+}

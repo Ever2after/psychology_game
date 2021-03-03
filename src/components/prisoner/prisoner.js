@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import * as actions from '../../actions';
 import Timer from '../common/timer';
 import socket from '../../socket.js';
+import Game_result from '../game_result';
 import '../css/prisoner.css';
 
 
@@ -26,6 +27,8 @@ class Prisoner extends Component{
       opponent_choice : 'unknown',
       my_emoji : 0,
       opponent_emoji : 0, // 0~9
+      result_mode : false,
+      result : new Map(),
     }
   }
   getData = ()=>{
@@ -45,6 +48,21 @@ class Prisoner extends Component{
         game_name : data.gameName,
         opponent_name : opponent_name,
       });
+    });
+  }
+  gameEnd = ()=>{
+    var result = new Map();
+    result.set(this.props.user_info.nickname, 1200-this.state.my_sentence*100);
+    result.set(this.state.opponent_name, 1200-this.state.opponent_sentence*100);
+    this.setState({
+      result : result,
+      result_mode : true,
+    });
+    socket.emit('exit room', {roomID : this.state.roomID, userID : this.props.user_info.nickname});
+    socket.emit('game result', {
+      userID : this.props.user_info.nickname,
+      point : result.get(this.props.user_info.nickname),
+      exp : 1000,
     });
   }
   componentDidMount = ()=>{
@@ -113,6 +131,12 @@ class Prisoner extends Component{
       });
       if(this.state.round!==6 && this.state.room_owner===this.props.user_info.nickname){
         socket.emit('game start', {roomID : this.state.roomID, gameName : this.state.game_name});
+      }
+      else if(this.state.round===6){
+        this.gameEnd();
+        this.setState({
+          result_mode : true,
+        });
       }
     });
     //-------------game step process done----------------//
@@ -273,7 +297,7 @@ class Prisoner extends Component{
     var my_emoji = this.emoji_select(this.state.my_emoji);
     var opponent_emoji = this.emoji_select(this.state.opponent_emoji);
 
-    return(
+    if(!this.state.result_mode) return(
       <div className='prisoner'>
         <div className="row1">
 
@@ -355,6 +379,9 @@ class Prisoner extends Component{
 
         </div>
       </div>
+    );
+    else return(
+      <Game_result data={this.state.result}/>
     );
   }
 }

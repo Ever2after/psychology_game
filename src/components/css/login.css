@@ -1,6 +1,6 @@
 .login{
   width : 400px;
-  margin : 200px auto;
+  margin : 10px auto;
   display : flex;
   flex-direction: column;
 }
@@ -9,7 +9,7 @@
   width : 350px;
   height : 45px;
   border-radius: 5px;
-  margin : 10px 0;
+  margin : 10px 25px;
   font-size : 16px;
 }
 
@@ -36,4 +36,46 @@
   color : #FFCF24;
   text-align : center;
   padding : 7px;
+}
+
+@media screen and (max-width: 768px) {
+  .login{
+    width : 240px;
+    margin : 0 auto;
+    display : flex;
+    flex-direction: column;
+  }
+
+  .login input, .login button, .login a{
+    width : 240px;
+    height : 40px;
+    border-radius: 5px;
+    margin : 10px 0;
+    font-size : 14px;
+  }
+
+  .login input{
+    box-sizing: border-box;
+    background-color : #384050;
+    outline : none;
+    border : 0;
+    padding : 10px 15px;
+    color : #fff;
+    transition : .1s;
+  }
+
+  .login button{
+    box-sizing: border-box;
+    background-color : #FFCF24;
+  }
+
+  .login a{
+    display : inline-block;
+    box-sizing: border-box;
+    background-color : #222B3D;
+    border : 2px solid #FFCF24;
+    color : #FFCF24;
+    text-align : center;
+    padding : 9px;
+  }
 }

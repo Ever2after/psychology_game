@@ -6,6 +6,7 @@ import '../css/hero.css';
 import Timer from '../common/timer';
 import Fame from './fame';
 import No_more_hero from './no_more_hero';
+import Game_result from '../game_result';
 import socket from '../../socket.js';
 
 const moment = require('moment-timezone');
@@ -16,10 +17,28 @@ class Hero extends Component{
     this.state = {
       timer_run : true,
       chat_list : [],
+      result_mode : false,
+      result : new Map(),
     }
   }
-
+  getData = ()=>{
+    fetch(`/room/id/${this.props.match.params.roomID}`)
+    .then(res=>res.json())
+    .then(data=>{
+      this.setState({
+        roomID : data.roomID,
+        user_list : data.userList,
+        room_owner : data.roomOwner,
+        game_name : data.gameName,
+      });
+    });
+  }
   componentDidMount = ()=>{
+    // get room information
+    setTimeout(this.getData, 500);
+
+    // game behavior listen----------------------
+
      socket.on('new message', (data)=>{
        var _chatlist = this.state.chat_list;
        _chatlist.push(data);
@@ -30,10 +49,27 @@ class Hero extends Component{
        this.makeScrollTop();
      });
 
+     // game end
      socket.on('hero appear', (data)=>{
        if(!this.state.hero){
          this.setState({
            hero : data.userID
+         });
+         // set result
+         var result = new Map();
+         for(var user of this.state.user_list){
+           if(data.userID !== user.userID) result.set(user.userID, 150);
+           else result.set(user.userID, 0);
+         }
+         this.setState({
+           result : result,
+         });
+         // exit room
+         socket.emit('exit room', {roomID : this.state.roomID, userID : this.props.user_info.nickname});
+         socket.emit('game result', {
+           userID : this.props.user_info.nickname,
+           point : result.get(this.props.user_info.nickname),
+           exp : 200,
          });
        }
      });
@@ -43,6 +79,21 @@ class Hero extends Component{
   gameEnd = ()=>{
     this.setState({
       timer_run : false,
+    });
+    // set result
+    var result = new Map();
+    for(var user of this.state.user_list){
+      result.set(user.userID, 50);
+    }
+    this.setState({
+      result : result,
+    });
+    // exit room
+    socket.emit('exit room', {roomID : this.state.roomID, userID : this.props.user_info.nickname});
+    socket.emit('game result', {
+      userID : this.props.user_info.nickname,
+      point : result.get(this.props.user_info.nickname),
+      exp : 200,
     });
   }
 
@@ -73,9 +124,9 @@ class Hero extends Component{
     socket.emit('hero appear', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname});
   }
   onClick3 = e=>{
-    socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname});
-    this.props.gameEnd();
-    this.props.history.push('/');
+    this.setState({
+      result_mode : true,
+    });
   }
   render(){
     const {chat_list} = this.state;
@@ -108,14 +159,14 @@ class Hero extends Component{
         }
       }
     }
-    return(
+    if(!this.state.result_mode) return(
       <div className='hero'>
         <div className="row1">
         {this.state.hero
           ?
             <>
               <Fame hero={this.state.hero}/>
-              <button className="exit" onClick={this.onClick3}>나가기</button>
+              <button className="exit" onClick={this.onClick3}>결과 확인</button>
             </>
           :
           (this.state.timer_run
@@ -129,7 +180,7 @@ class Hero extends Component{
            :
             <>
               <No_more_hero/>
-              <button className="exit" onClick={this.onClick3}>나가기</button>
+              <button className="exit" onClick={this.onClick3}>결과 확인</button>
             </>
           )
         }
@@ -144,6 +195,9 @@ class Hero extends Component{
           </div>
         </div>
       </div>
+    );
+    else return(
+      <Game_result roomID={this.state.roomID} data={this.state.result}/>
     );
   }
 }

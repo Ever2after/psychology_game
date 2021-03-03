@@ -41,7 +41,7 @@ class Generate_room extends Component{
       .then(data=>{
         console.log(data);
       });
-    this.props.history1.push(`/game_ready/${roomID}`);
+    this.props.history.push(`/game_ready/${roomID}`);
   }
   // 1 증가
   onClick2 = ()=>{
@@ -70,7 +70,8 @@ class Generate_room extends Component{
     });
   }
   render(){
-    return(
+    const mobile = window.innerWidth<768;
+    if(!mobile) return(
       <div className='generate_room'>
         <div className="game_select">
           <button className={this.state.name==="죄수의 딜레마" ? "select" : ""}
@@ -93,7 +94,30 @@ class Generate_room extends Component{
           <button onClick={this.onClick1}>방 생성</button>
         </div>
       </div>
-    );
+    )
+    else return(
+      <div className='generate_room'>
+        <label>방 만들기</label>
+        <span>원하는 방을 만드세요.</span>
+        <select name="name" onChange={this.onChange}>
+          <option value="죄수의 딜레마">죄수의 딜레마</option>
+          <option value="외로운 영웅">외로운 영웅</option>
+          <option value="보물선">보물선</option>
+          <option value="전쟁과 평화">전쟁과 평화</option>
+          <option value="거꾸로 경매">거꾸로 경매</option>
+        </select>
+        <div className="wrap1">
+          <button className="circle" onClick={this.onClick3}>-</button>
+          <button>{this.state.name==='죄수의 딜레마' ? "2인" : this.state.max_number+'인'}</button>
+          <button className="circle" onClick={this.onClick2}>+</button>
+        </div>
+        <div className="wrap2">
+          <button className={this.state.isPublic ? "select" : ""} onClick={()=>this.onClick5(true)}>공개</button>
+          <button className={this.state.isPublic ? "" : "select"} onClick={()=>this.onClick5(false)}>비공개</button>
+        </div>
+        <button onClick={this.onClick1}>방 생성</button>
+      </div>
+    )
   }
 }
 

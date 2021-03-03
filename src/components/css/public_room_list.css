@@ -1,5 +1,5 @@
 .public_room_list{
-  width : 1400px;
+  width : 1300px;
   margin : 0 auto;
 }
 
@@ -12,15 +12,10 @@
   box-shadow : 0px 5px 3px rgba(0,0,0,0.1);
 }
 
-.public_room_list .menu{
-  width : 1300px;
-  margin : 30px 50px;
-}
-
 .public_room_list .room_list{
   display : flex;
   flex-wrap : wrap;
-  width : 1400px;
+  width : 1300px;
 }
 
 .public_room_list > .game_select{
@@ -37,4 +32,43 @@
 .public_room_list .game_select .select{
   background-color : #FFCF24;
   color : #000000;
+}
+
+@media screen and (max-width: 768px) {
+  .public_room_list{
+    width : 320px;
+    margin : 0 auto;
+  }
+
+  .public_room_list label{
+    display : block;
+    font-size : 26px;
+    color : #fff;
+    margin : 40px auto 20px auto;
+    font-weight: bold;
+  }
+
+  .public_room_list select{
+    box-sizing: border-box;
+    width : 320px;
+    height : 45px;
+    background-color : #384050;
+    border : none;
+    outline : none;
+    color : #fff;
+    padding : 10px 15px;
+    font-size : 14px;
+    margin-bottom : 10px;
+  }
+
+  .public_room_list .room_list{
+    display : flex;
+    flex-direction: column;
+    width : auto;
+  }
+
+  .public_room_list > .game_select{
+    width : auto;
+    margin : 0;
+  }
 }

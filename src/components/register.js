@@ -106,7 +106,6 @@ class Register extends Component{
       })
       .then(res=>res.json())
       .then(data=>{
-        console.log(data);
         if(data.result===1){
           alert('회원가입에 성공했습니다.');
           this.props.handleSuccess(data.user);

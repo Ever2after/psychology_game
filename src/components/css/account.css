@@ -1,0 +1,33 @@
+@media screen and (max-width: 768px) {
+  .account{
+    width : 300px;
+    margin : 40px auto;
+    color : #fff;
+  }
+
+  .account > label{
+    display : block;
+    font-size : 26px;
+    margin : 10px 0;
+    font-weight: bold;
+  }
+
+  .account label{
+    display : block;
+    margin : 10px 0;
+  }
+
+  .account > span{
+    display : inline-block;
+    margin-bottom : 20px;
+  }
+
+  .account .hl{
+    color : #ffcf24;
+  }
+
+  .account button{
+    background : #ffcf24;
+    padding : 7px 15px;
+  }
+}

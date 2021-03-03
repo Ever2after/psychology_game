@@ -32,7 +32,8 @@ class Login extends Component{
     .then(data=>{
       if(data.is_logined){
         this.props.handleSuccess(data.user);
-        this.props.history.push('/');
+        if(this.props.toPrev) window.location.reload();
+        else this.props.history.push('/');
       }
       else{
         alert('잘못된 Email 또는 비밀번호 입니다.');
@@ -44,8 +45,8 @@ class Login extends Component{
       <div className='login'>
         <input type="email" name="email" onChange={this.onChange} required placeholder="Email"/>
         <input type="password" name="password" onChange={this.onChange} required placeholder="Password"/>
-        <button onClick={this.onClick1}>Login</button>
-        <Link to="/register">Sign Up</Link>
+        <button onClick={this.onClick1}>로그인</button>
+        <Link to="/register">계정 생성</Link>
       </div>
     );
   }

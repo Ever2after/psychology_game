@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('./passport.js');
 const jwt = require('jsonwebtoken');
+const request = require('request');
 
 // load config
 const port1 = 5000;
@@ -97,7 +98,22 @@ io.on('connection', socket=>{
 
   socket.on('send message', (data)=>{
     io.to(data.roomID).emit('new message', {isAlert : false, userID : data.userID, message : data.message, time : Date.now()});
-  })
+  });
+
+  // game result
+  socket.on('game result', (data)=>{
+    User.findOne({nickname : data.userID}, (err, user)=>{
+      if(err) return err;
+      if(user){
+        user.point = user.point + data.point;
+        user.exp = user.exp + data.exp;
+        user.game = user.game + 1;
+        user.save((err)=>{
+          if(err) return err;
+        });
+      }
+    });
+  });
 
   socket.on('game start', (data)=>{
     io.to(data.roomID).emit('game start', {});
@@ -173,6 +189,17 @@ io.on('connection', socket=>{
           io.to(data.roomID).emit('round end', {});
         }, time[6]);
         break;
+      case '거꾸로 경매' :
+        var time = [3000, 8000];
+        // round start (3~)
+        setTimeout(()=>{
+          io.to(data.roomID).emit('round start', {});
+        }, time[0]);
+        // auction start (8~)
+        setTimeout(()=>{
+          io.to(data.roomID).emit('auction start', {});
+        }, time[1]);
+        break;
     }
   });
 
@@ -205,13 +232,96 @@ io.on('connection', socket=>{
     setTimeout(()=>{
       io.to(data.roomID).emit('get reward', {userID : data.userID, point : data.point});
     }, 500);
+  });
 
+  //--------------------REVERSE_AUCTION------------//
+  socket.on('auction end', (data)=>{
+    io.to(data.roomID).emit('auction end', {
+      userID : data.userID,
+      price : data.price,
+    });
+  });
+
+  socket.on('auction skip', (data)=>{
+    setTimeout(()=>{
+      io.to(data.roomID).emit('round end', {});
+    }, 5000);
+  });
+
+  socket.on('get items', (data)=>{
+    io.to(data.roomID).emit('get items', {
+      items : getRandomItem(),
+    });
   });
 
   socket.on('disconnect', ()=>{
 
   });
 });
+
+//------------------------ moving dots data api---------------------------
+app.get('/movingdot', (req, res)=>{
+  request('https://maestro-gtl-dots.herokuapp.com/get_game_data/?final_group_num=3', function(error, response, body){
+    res.json(JSON.parse(body));
+  });
+});
+
+app.post('/movingdot/result', (req, res)=>{
+  const body = req.body;
+  console.log(body);
+  const options = {
+    uri : 'https://maestro-gtl-dots.herokuapp.com/get_cluster_result/',
+    qs : body,
+  }
+  request(options, function(err, response, body){
+    console.log(body);
+    res.json(JSON.parse(body));
+  });
+})
+
+
+//------------------------- reverse auction get item----------------------
+function getRandomItem(){
+  // item : apple, clip, radio, film, paint, telescope, orb, diamond
+  // color : 0(red), 1(green), 2(blue), 3(yellow)
+  var items = [
+    {body : 'apple', name : '사과', value : 150000, color : 0},
+    {body : 'apple', name : '사과', value : 150000, color : 1},
+    {body : 'apple', name : '사과', value : 150000, color : 2},
+    {body : 'apple', name : '사과', value : 150000, color : 3},
+    {body : 'clip', name : '클립', value : 200000, color : 0},
+    {body : 'clip', name : '클립', value : 200000, color : 1},
+    {body : 'clip', name : '클립', value : 200000, color : 2},
+    {body : 'clip', name : '클립', value : 200000, color : 3},
+    {body : 'radio', name : '라디오', value : 500000, color : 0},
+    {body : 'radio', name : '라디오', value : 500000, color : 1},
+    {body : 'radio', name : '라디오', value : 500000, color : 2},
+    {body : 'film', name : '필름', value : 1500000, color : 0},
+    {body : 'film', name : '필름', value : 1500000, color : 1},
+    {body : 'film', name : '필름', value : 1500000, color : 2},
+    {body : 'paint', name : '페인트', value : 2300000, color : 0},
+    {body : 'paint', name : '페인트', value : 2300000, color : 1},
+    {body : 'telescope', name : '망원경', value : 3500000, color : 0},
+    {body : 'telescope', name : '망원경', value : 3500000, color : 1},
+    {body : 'orb', name : '오브', value : 5300000, color : 0},
+    {body : 'diamond', name : '다이아몬드', value : 13500000, color : 0},
+  ];
+  items = shuffleArray(items);
+  return items;
+}
+
+function shuffleArray(arr){
+  for(let k = 0;k<10;k++){
+    for(let i = 0;i<arr.length;i++){
+      var j = Math.floor(Math.random()*arr.length);
+      var temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+  }
+  return arr;
+}
+
 
 //------------------------ user ----------------------
 // get all user sort by registered_date
@@ -236,6 +346,27 @@ app.get('/user/exp', (req, res)=>{
     if(err) return res.status(500).json({error : err});
     res.json(users);
   });
+});
+
+//-----------------guest-------------------
+app.get('/guest', (req, res)=>{
+  const user = {
+      nickname : 'guest1',
+      type : 'guest',
+  };
+  const token = jwt.sign(
+    { user : user },
+    'jusang'
+  );
+  res.cookie('token', token, {maxAge : 24*3600*1000});
+  res.json({
+    is_logined : false,
+    user : user,
+  });
+});
+
+app.get('/guest/jwt', (req, res)=>{
+
 });
 
 //-----------------auth--------------------
@@ -270,7 +401,11 @@ app.post('/auth/login', (req, res)=> {
 // jwt check process
 app.get('/auth/jwt', passport.authenticate('jwt', {session : false}),
   (req, res, next)=>{
-    res.json({ is_logined : true, user : req.user });
+    try{
+      res.json({ is_logined : true, user : req.user });
+    }catch(e){
+      console.log(e);
+    }
   }
 );
 // register process

@@ -99,7 +99,7 @@ class Game_ready extends Component{
   }
   onClick2 = e=>{
     socket.emit('exit room', {roomID : this.props.match.params.roomID, userID : this.props.user_info.nickname});
-    this.props.history.push('/public_room_list');
+    this.props.history.replace('/public_room_list');
   }
   // start game
   onClick3 = e=>{
@@ -128,6 +128,10 @@ class Game_ready extends Component{
         break;
       case '전쟁과 평화' :
         this.props.history.replace(`/war_and_peace/${this.props.match.params.roomID}`);
+        break;
+      case '거꾸로 경매' :
+        this.props.history.replace(`/reverse_auction/${this.props.match.params.roomID}`);
+        break;
       default :
         break;
     }
@@ -172,7 +176,8 @@ class Game_ready extends Component{
       }
     }
     const isOwner = this.state.roomOwner == this.props.user_info.nickname;
-    return(
+    const mobile = window.innerWidth<768;
+    if(!mobile) return(
       <div className = 'game_ready'>
         <div className="row1">
           <div className="dummy1"></div>
@@ -204,6 +209,35 @@ class Game_ready extends Component{
             </div>
           </div>
           <div className="dummy"></div>
+        </div>
+      </div>
+    );
+    else return(
+      <div className="game_ready">
+        <div className="top">
+          <label>대기실</label>
+          <span>{this.state.game_name}</span>
+          <span>{this.state.user_list.length}/{this.state.max_number}인</span>
+        </div>
+        <div className="middle">
+          <label>참가자 명단</label>
+          <div className="userlist">
+            {users}
+          </div>
+        </div>
+        <div className="bottom">
+          <label>채팅창</label>
+          <div className="chatting">
+            {chat}
+          </div>
+          <div className="chatting_input">
+            <input id="chat" type="text" name="chatting" required onChange={this.onChange} onKeyDown={this.onKeyDown}/>
+            <button className={this.state.chatting ? "active" : "nonactivate"} type="submit" onClick={this.onClick1}>전송</button>
+          </div>
+        </div>
+        <div className="btn_container">
+          <button onClick={this.onClick2}>방 나가기</button>
+          {isOwner ? <button onClick={this.onClick3}>게임 시작</button> : <></>}
         </div>
       </div>
     );

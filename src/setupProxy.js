@@ -20,6 +20,12 @@ module.exports = function(app){
     })
   );
   app.use(
+    createProxyMiddleware('/movingdot', {
+      target: 'http://localhost:5000',
+      changeOrigin: true,
+    })
+  );
+  app.use(
     createProxyMiddleware('/socket.io', {
       target: 'http://localhost:5000',
       changeOrigin: true,

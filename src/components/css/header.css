@@ -23,9 +23,19 @@
   justify-content: space-between;
 }
 
+.header > div > div{
+  font-size : 18px;
+  margin : auto 60px;
+  color : #fff;
+}
+
 .header div a, .header div button{
   font-size : 18px;
   color : #fff;
   display : inline-block;
-  margin : auto 60px;
+  margin : auto 0;
+}
+
+.mobile_header{
+  display : none;
 }

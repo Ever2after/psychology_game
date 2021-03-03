@@ -11,7 +11,8 @@ class Public_room extends Component{
 
   render(){
     const {data, onClick} = this.props;
-    return(
+    const mobile = window.innerWidth<768;
+    if(!mobile) return(
       <div className="public_room">
         <div>
           <img src="./assets/2.jpg"/>
@@ -22,8 +23,20 @@ class Public_room extends Component{
             <span>그 외 세부정보</span>
           </div>
         </div>
-        <button name={data.roomID}
-        onClick={onClick}>참가</button>
+        <button onClick={onClick}>참가</button>
+      </div>
+    );
+    else return(
+      <div className="public_room" onClick={onClick}>
+        <div>
+          <img src="./assets/2.jpg"/>
+          <div>
+            <span className="name">{data.gameName}</span>
+            <span className="number">{data.userList.length}/{data.maxNumber}명</span>
+            <br/>
+            <span>그 외 세부정보</span>
+          </div>
+        </div>
       </div>
     );
   }

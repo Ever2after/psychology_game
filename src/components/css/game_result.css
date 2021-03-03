@@ -1,0 +1,46 @@
+.game_result{
+  width : 1200px;
+  margin : 0 auto;
+}
+
+.game_result > div:nth-child(1){
+  margin : 90px 0;
+  color : #FFCF24;
+  font-size : 36px;
+}
+
+.game_result .result{
+  box-sizing: border-box;
+  display : flex;
+  flex-direction: column;
+  justify-content: center;
+  height : 500px;
+}
+
+.game_result .result > div{
+  box-sizing: border-box;
+  display : flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin : 7px auto;
+  padding : 10px 25px;
+  border-radius: 50px;
+  background : #384050;
+  color : #FFCF24;
+  width : 710px;
+  font-size : 18px;
+}
+
+.game_result .result .mine{
+  background : #FFCF24;
+  color : black;
+}
+
+.game_result > button{
+  display: block;
+  margin : 0 auto;
+  color : black;
+  background: #FFCF24;
+  padding : 10px 50px;
+  border-radius: 50px;
+}

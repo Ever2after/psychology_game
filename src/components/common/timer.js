@@ -22,7 +22,6 @@ class Timer extends Component{
     }
   }
   componentWillReceiveProps = (nextProps)=>{
-
     if(nextProps.start && !this.props.start) {
       clearInterval(this.timer);
       this.timer = setInterval(this.draw, 10);

@@ -6,6 +6,7 @@ import Timer from '../common/timer';
 import Player from './player';
 import socket from '../../socket.js';
 import '../css/war_and_peace.css';
+import Game_result from '../game_result';
 const moment = require('moment-timezone');
 
 class War_and_peace extends Component{
@@ -20,6 +21,8 @@ class War_and_peace extends Component{
       time : 10000,
       user_list : [],
       power_up : 0,
+      result_mode : false,
+      result : new Map(),
     }
   }
   getData = ()=>{
@@ -48,6 +51,22 @@ class War_and_peace extends Component{
         game_name : data.gameName,
         user_map : user_map,
       });
+    });
+  }
+  gameEnd = ()=>{
+    var result = new Map();
+    for(let [key, value] of this.state.user_map){
+      if(value.active) result.set(key, value.point);
+    }
+    this.setState({
+      result : result,
+      result_mode : true,
+    });
+    socket.emit('exit room', {roomID : this.state.roomID, userID : this.props.user_info.nickname});
+    socket.emit('game result', {
+      userID : this.props.user_info.nickname, 
+      point : result.get(this.props.user_info.nickname),
+      exp : 2000,
     });
   }
   componentDidMount = ()=>{
@@ -158,6 +177,9 @@ class War_and_peace extends Component{
           roomID : this.state.roomID,
           gameName : this.state.game_name,
         });
+      } else if (this.state.round===6){
+        // if game ends
+        this.gameEnd();
       }
     });
     //-------------game step process done----------------//
@@ -216,7 +238,6 @@ class War_and_peace extends Component{
       });
     });
   }
-
   makeScrollTop = ()=>{
     var target = document.getElementsByClassName('chatting')[0];
     target.scrollTop = target.scrollHeight;
@@ -368,7 +389,7 @@ class War_and_peace extends Component{
     else if(this.state.step===4) button = <button onClick={this.onClick6}>약탈💣</button>;
     else button = <></>;
 
-    return(
+    if(!this.state.result_mode) return(
       <div className='war_and_peace'>
         <div className="row1">
 
@@ -426,6 +447,9 @@ class War_and_peace extends Component{
 
         </div>
       </div>
+    );
+    else return(
+      <Game_result roomID={this.state.roomID} data={this.state.result}/>
     );
   }
 }

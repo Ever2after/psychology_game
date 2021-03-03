@@ -1,6 +1,6 @@
 .game_container{
-  width : 400px;
-  height : 420px;
+  width : 350px;
+  height : 340px;
   background-color : #384050;
   border-radius : 30px;
   margin-bottom : 40px;
@@ -8,8 +8,8 @@
 }
 
 .game_container > img{
-  width : 400px;
-  height : 320px;
+  width : 350px;
+  height : 240px;
   border-radius : 30px 30px 0 0;
 }
 
@@ -27,7 +27,7 @@
 .game_container > div > button{
   box-sizing : border-box;
   height : 50px;
-  width : 200px;
+  width : 175px;
   margin : 0;
 }
 

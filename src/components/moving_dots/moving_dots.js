@@ -4,6 +4,7 @@ import Timer from '../common/timer';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
 import '../css/moving_dots.css';
+const request = require('request');
 
 function Moving_dots(props){
   let canvas;
@@ -38,8 +39,10 @@ function Moving_dots(props){
   let backgroundMsg;
   // set other dots' positions {X : .., Y : ..}
   let positions = [];
+  // contains information of position
+  let position_data;
 
-  useEffect(()=>{
+  useEffect(async ()=>{
     // use full screen
     window.document.documentElement.requestFullscreen();
     //---------initialize----------------------------//
@@ -52,7 +55,7 @@ function Moving_dots(props){
     backgroundMsg = "Ready";
     setBackgroundMsg(backgroundMsg);
     // draw positions of other Moving_dots
-    setPositions();
+    await setPositions();
     //---------initialize done----------------------------//
     // countDown
     setTimeout(()=>{
@@ -121,8 +124,11 @@ function Moving_dots(props){
         // timer stop
         setTimer(false);
         // canvas update
+        updatePositions();
         backgroundMsg = "Game End";
         draw(e);
+        // get game results
+        getResults();
       }
       // round is not yet 9
       else{
@@ -175,23 +181,43 @@ function Moving_dots(props){
     }
   }
 
-  function setPositions(){
-    for(var i=0;i<20;i++){
-      positions.push({X : Math.random()*width, Y : Math.random()*height});
-    }
+  async function setPositions(){
+    fetch('/movingdot')
+    .then(res=>res.json())
+    .then(data=>{
+      position_data = data;
+      positions = position_data.coord_record[0];
+      length = position_data.movers;
+    });
   }
 
   function updatePositions(){
-    for(var i=0;i<20;i++){
-      positions[i].X = positions[i].X+(2*Math.random()-1)*length[round];
-      positions[i].Y = positions[i].Y+(2*Math.random()-1)*length[round];
+    positions = position_data.coord_record[round+1];
+  }
+
+  function getResults(){
+    positions.push([pos.X, pos.Y]);
+    const post = {
+      coord_data : positions,
+      k : 3,
     }
+    fetch('/movingdot/result', {
+        method :"POST",
+        headers:{
+          'content-type':'application/json'
+        },
+        body:JSON.stringify(post)    // post객체를 작성한 주소로 post방식으로 보내버린다.
+    })
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data);
+    });
   }
 
   function drawDots(){
-    for(var i=0;i<20;i++){
+    for(var i=0;i<position_data.points_num;i++){
       ctx.beginPath();
-      ctx.arc(positions[i].X, positions[i].Y, 10, 0, 2*Math.PI, true);
+      ctx.arc(positions[i][0], positions[i][1], 10, 0, 2*Math.PI, true);
       ctx.fillStyle="#FFCF24";
       ctx.fill();
     }

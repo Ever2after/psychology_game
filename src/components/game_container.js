@@ -57,7 +57,7 @@ class Game_container extends Component{
   }
   render(){
     return(
-      <div className={'game_container'+(this.props.center ? ' center' : '')}>
+      <div className='game_container'>
         <img src="./assets/2.jpg"/>
         <div className="status">{this.props.name}</div>
         <div>
