@@ -41,7 +41,7 @@ class Fast_start extends Component{
         </div>
         <div>
           <label>단합형</label>
-          <p>
+          <p>  
             모두가 협력하면 더 많은 포인트 획득이 가능한
             게임. 단, 누군가가 배신하면 나머지는 모두 손해
             를 보게 된다. 게임 결과를 통해 '단합 지수'를

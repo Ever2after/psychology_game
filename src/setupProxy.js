@@ -15,7 +15,7 @@ module.exports = function(app){
   );
   app.use(
     createProxyMiddleware('/user', {
-      target: 'http://localhost:5000',
+      target: 'http://35.226.125.217:5000',
       changeOrigin: true,
     })
   );
